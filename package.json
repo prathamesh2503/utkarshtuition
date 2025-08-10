@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
     "react": "^19.1.1",
