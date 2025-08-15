@@ -9,12 +9,17 @@ body {
   padding: 0px;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 #main-header {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100px;
+  height: 120px;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -32,18 +37,36 @@ body {
 }
 
 .nav-button-container {
+  position: absolute;
+  top: 120px;
   width: 100vw;
-  padding: 10px 30px;
+  height: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   background-color: lightblue;
+  transition: height 0.3s ease;
 }
 
-#nav-links-container .nav-link {
+.nav-button-container.expanded {
+  height: 120px;
+}
+
+#nav-links-container {
+  margin-top: 20px;
+}
+.nav-link {
   display: none;
 }
 
+.nav-link.navLinksVisible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #nav-menu-btn {
+  position: absolute;
+  left: 20px;
   cursor: pointer;
   border: 0px;
   border-radius: 3px;
@@ -51,8 +74,38 @@ body {
 }
 
 #teacher-login-btn {
+  position: absolute;
+  right: 20px;
   cursor: pointer;
   border: 0px;
   border-radius: 3px;
   font-size: medium;
+}
+
+@media (min-width: 768px) {
+  .nav-button-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  #nav-links-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0px 15px;
+  }
+  #nav-links-container .nav-link {
+    display: block;
+    margin: 0px 10px;
+  }
+
+  #teacher-login-btn {
+    cursor: pointer;
+    border: 0px;
+    border-radius: 3px;
+    font-size: 1rem;
+  }
+
+  #nav-menu-btn {
+    display: none;
+  }
 }
