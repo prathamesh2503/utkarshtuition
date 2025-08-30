@@ -13,7 +13,7 @@ a {
   text-decoration: none;
   color: black;
 }
-
+/* Home Page CSS */
 #main-header {
   position: relative;
   display: flex;
@@ -37,8 +37,7 @@ a {
 }
 
 .nav-button-container {
-  position: absolute;
-  top: 120px;
+  position: relative;
   width: 100vw;
   height: 30px;
   display: flex;
@@ -80,6 +79,148 @@ a {
   border: 0px;
   border-radius: 3px;
   font-size: medium;
+}
+
+/* About Me Section */
+
+.about-me-container {
+  text-align: center;
+}
+.about-me-child-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.about-me-image {
+  width: 150px;
+  height: 180px;
+}
+#about-me-teacher-image {
+  width: 150px;
+  height: 100%;
+}
+
+.about-me-content {
+  margin: 0px 10px;
+}
+/* Login Page Css  */
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  height: 50vh;
+  width: 90%;
+}
+
+.login-form {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+
+.login-btn {
+  grid-column: span 2;
+  margin: 10px 50px;
+}
+
+/* Dashboard Page */
+
+.dashboard-container {
+  display: flex;
+  width: 100vw;
+  height: calc(100vh - 120px);
+  background-color: bisque;
+  overflow: hidden;
+}
+
+.dashboard-menu-container {
+  padding: 0px 5px;
+  position: sticky;
+  top: 0px;
+  width: 100px;
+  background-color: burlywood;
+}
+
+.dashboard-menu {
+  cursor: pointer;
+}
+
+.dashboard-function-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: calc(100vh - 120px);
+  overflow-y: auto; /* scroll only the content area */
+  background-color: lightpink;
+  overflow: hidden;
+}
+
+/* Edit About Me */
+.edit-about-me-form {
+  width: 180px;
+  position: absolute;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-row label {
+  font-size: 15px;
+}
+
+.form-row textarea {
+  width: 100%;
+}
+
+.teacher-data-container {
+  height: max-content;
+  width: 97%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 250px;
+  font-size: 12px;
+  border: 2px solid black;
+}
+.teacher-data-scroll {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.teacher-data-row {
+  min-width: 500px;
+  display: flex;
+  margin: 0px 30px;
+}
+
+.teacher-data-style {
+  width: 100px;
+  border: 1px solid black;
+  text-align: center;
+}
+.teacher-img {
+  margin: auto;
+  width: 70px;
+  height: 60px;
+}
+
+#teacher-data-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2px;
+  gap: 7px;
 }
 
 @media (min-width: 768px) {

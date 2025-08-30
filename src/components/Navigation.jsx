@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -19,6 +20,11 @@ const Navigation = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const goToLogin = () => {
+    navigate("/Login");
+  };
+
   return (
     <>
       <div
@@ -30,37 +36,39 @@ const Navigation = () => {
         </button>
         <nav id="nav-links-container">
           <a
-            class={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
+            className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#corousal"
           >
             Home
           </a>
           <a
-            class={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
+            className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#about"
           >
             About Me
           </a>
           <a
-            class={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
+            className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#achievement"
           >
             Achievements
           </a>
           <a
-            class={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
+            className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#blogs"
           >
             Blogs
           </a>
           <a
-            class={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
+            className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#contact-me"
           >
             Contact Me
           </a>
         </nav>
-        <button id="teacher-login-btn">Teacher Login</button>
+        <button id="teacher-login-btn" onClick={goToLogin}>
+          Teacher Login
+        </button>
       </div>
     </>
   );
