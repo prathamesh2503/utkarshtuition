@@ -7,8 +7,8 @@ const AboutMe = () => {
         <div className="about-me-image">
           <img
             src={teacherImage}
-            alt=""
-            srcset=""
+            alt="teacher image"
+            srcSet=""
             id="about-me-teacher-image"
           />
         </div>

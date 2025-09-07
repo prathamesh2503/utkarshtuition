@@ -2,6 +2,19 @@ import Logo from "./logo";
 import DashboardMenu from "./DashboardMenu";
 import teacherImage from "../assets/images/teacherImage.jpg";
 const EditAboutMe = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // This line collects all the input values from the form that was submitted and stores them in a special object (formData) so you can easily use or send them.
+    const formData = new FormData(e.target);
+
+    const response = await fetch("http://localhost:4000/teacher", {
+      method: "Post",
+      body: formData,
+    });
+    console.log(response);
+  };
+
   return (
     <>
       <header id="main-header">
@@ -11,7 +24,11 @@ const EditAboutMe = () => {
         <DashboardMenu />
         <div className="dashboard-function-container">
           <h3 className="dashboard-heading">Edit About Me </h3>
-          <form action="" className="edit-about-me-form">
+          <form
+            onSubmit={handleSubmit}
+            action=""
+            className="edit-about-me-form"
+          >
             <div className="form-row">
               <label htmlFor="teacher-image">Teacher Image</label>
               <input type="file" name="teacher-image" id="teacher-image" />
@@ -29,6 +46,7 @@ const EditAboutMe = () => {
             </div>
             <input type="submit" value="Submit" />
           </form>
+          {/* Display added teacher data */}
           <div className="teacher-data-container">
             <h3>Show About Me Data</h3>
             <div className="teacher-data-scroll">

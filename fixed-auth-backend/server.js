@@ -1,12 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-const { PrismaClient } = require("@prisma/client");
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import { PrismaClient } from "@prisma/client";
+import teacherRouter from "./teacherRoutes.js";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +16,9 @@ app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
+
+// mount teacher routes (ESM import)
+app.use(teacherRouter);
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
@@ -104,9 +108,10 @@ Think of 500 as: “The client made a valid request, but the server failed to ha
   }
 });
 
+// logout and listen
 app.post("/logout", (req, res) => {
-  res.clearCookie("token"); // clear cookie from browser
-  res.json({ message: "Logout Successfuly." }); // send JSON response back
+  res.clearCookie("token");
+  res.json({ message: "Logout Successfully." });
 });
 
 app.listen(4000, () => {
