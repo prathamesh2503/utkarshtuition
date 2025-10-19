@@ -290,6 +290,34 @@ a {
   justify-self: center;
 }
 
+#footer {
+  margin-top: 50px;
+}
+
+#info-table {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: 15px 0px;
+  font-size: 15px;
+}
+
+#copyright-text {
+  font-size: small;
+  text-align: center;
+}
+
+#scroll-to-top-btn {
+  display: none;
+  position: fixed;
+  left: 80vw;
+  bottom: 20px;
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+  background-color: transparent;
+}
+
 @media (min-width: 768px) {
   .nav-button-container {
     display: flex;
