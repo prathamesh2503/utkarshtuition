@@ -1,5 +1,4 @@
-const { createClient } = require("@supabase/supabase-js");
-
+import { createClient } from "@supabase/supabase-js";
 // create connection
 
 const supabase = createClient(
@@ -7,7 +6,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-module.exports = supabase;
+export default supabase;
 /** Setup Supabase Storage
  * Go to Storage → Create new bucket
  * Install Supabase Client in Backend - npm install @supabase/supabase-js

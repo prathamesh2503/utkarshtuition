@@ -7,6 +7,10 @@ const DashboardMenu = () => {
     navigate("/editAboutMe");
   };
 
+  const handleAchievement = () => {
+    navigate("/editAchievement");
+  };
+
   // Logout
   const handleLogout = async () => {
     try {
@@ -26,7 +30,9 @@ const DashboardMenu = () => {
       <h5 className="dashboard-menu" onClick={handleAboutMe}>
         Edit About Me
       </h5>
-      <h5 className="dashboard-menu">Edit Achievements</h5>
+      <h5 className="dashboard-menu" onClick={handleAchievement}>
+        Edit Achievements
+      </h5>
       <h5 className="dashboard-menu" onClick={handleLogout}>
         Logout
       </h5>

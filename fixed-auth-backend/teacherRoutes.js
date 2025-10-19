@@ -26,7 +26,10 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
       // Upload image to supabase storage
       const { data, error } = await supabase.storage
         .from("teacher-images")
-        .upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
+        .upload(fileName, req.file.buffer, {
+          contentType: req.file.mimetype,
+          upsert: true, // Overright if same name
+        });
 
       if (error) throw error;
 
@@ -39,18 +42,62 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
     }
 
     // Insert into database
-    const teacher = await prisma.teacher.create({
-      data: {
+    const teacher = await prisma.teacher.upsert({
+      where: { id: 1 },
+      update: {
         name,
         description,
         imageUrl,
       },
+      create: { id: 1, name, description, imageUrl },
     });
 
     res.json({ success: true, teacher });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Server error" });
+  }
+});
+
+// Get route for one teacher
+
+router.get("/teacher", async (req, res) => {
+  try {
+    const teacher = await prisma.teacher.findUnique({ where: { id: 1 } });
+    res.json({ success: "true", teacher });
+  } catch (error) {
+    console.error("Fetch error", error);
+    res.status(500).json({ success: false, error: "server error" });
+  }
+});
+
+// Delete teacher from database
+router.delete("/teacher/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { imagePath } = req.body;
+
+    if (imagePath) {
+      const { data, error } = await supabase.storage
+        .from("teacher-images")
+        .remove([imagePath]);
+
+      if (error) {
+        console.log("Supabase delete error:", error.message);
+      } else {
+        console.log("Image is deleted successfuly", data);
+      }
+    }
+
+    const teacher = await prisma.teacher.delete({ where: { id: Number(id) } });
+    res.json({
+      success: "true",
+      message: "Teacher and image delete successfully.",
+      teacher: teacher,
+    });
+  } catch (error) {
+    console.error("Fetch error", error);
+    res.status(500).json({ success: false, error: "server error" });
   }
 });
 

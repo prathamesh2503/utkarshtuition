@@ -1,7 +1,27 @@
 import Logo from "./logo";
 import DashboardMenu from "./DashboardMenu";
-import teacherImage from "../assets/images/teacherImage.jpg";
+import { useState, useEffect } from "react";
 const EditAboutMe = () => {
+  const [teacher, setTeacher] = useState(null);
+
+  // Witout useEffect only UI renders but with useEffect it render updated teacher data when page loads.
+
+  useEffect(() => {
+    const fetchTeacher = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/teacher");
+        const data = await res.json();
+        if (data.success) {
+          setTeacher(data.teacher);
+          console.log(data.teacher);
+        }
+      } catch (error) {
+        console.error("Error fetching teacher:", error);
+      }
+    };
+    fetchTeacher();
+  }, []); // empty array means run only once on page load
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -12,7 +32,29 @@ const EditAboutMe = () => {
       method: "Post",
       body: formData,
     });
-    console.log(response);
+    if (!response.ok) {
+      console.error("Error:", response.statusText);
+    }
+
+    const data = await response.json();
+    setTeacher(data.teacher);
+    e.target.reset(); // ✅ clear form inputs
+  };
+
+  // Delete Data from database
+  const handleDelete = async () => {
+    const responseDel = await fetch(
+      `http://localhost:4000/teacher/${teacher.id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagePath: teacher.imageUrl }),
+      }
+    );
+    const resData = await responseDel.json();
+    console.log(resData);
+
+    setTeacher(null); // Clear UI
   };
 
   return (
@@ -47,27 +89,32 @@ const EditAboutMe = () => {
             <input type="submit" value="Submit" />
           </form>
           {/* Display added teacher data */}
-          <div className="teacher-data-container">
+          <div className="data-container">
             <h3>Show About Me Data</h3>
-            <div className="teacher-data-scroll">
-              <div className="teacher-data-row">
-                <div className="teacher-data-style">Teacher Image</div>
-                <div className="teacher-data-style">Teacher Name</div>
-                <div className="teacher-data-style">About Me Description</div>
-                <div className="teacher-data-style">Add/Delete</div>
+            <div className="data-scroll">
+              <div className="data-row">
+                <div className="data-style">Teacher Image</div>
+                <div className="data-style">Teacher Name</div>
+                <div className="data-style">About Me Description</div>
+                <div className="data-style">Add/Delete</div>
               </div>
-              <div className="teacher-data-row">
-                <div className="teacher-data-style">
-                  <img src={teacherImage} alt="" className="teacher-img" />
-                </div>
+              {teacher && (
+                <div className="data-row">
+                  <div className="data-style">
+                    <img
+                      src={teacher.imageUrl}
+                      alt="teacher image"
+                      className="teacher-img"
+                    />
+                  </div>
 
-                <div className="teacher-data-style"> Teacher Name</div>
-                <div className="teacher-data-style">About Me Description</div>
-                <div className="teacher-data-style" id="teacher-data-btn">
-                  <button>Add</button>
-                  <button>Delete</button>
+                  <div className="data-style"> {teacher.name}</div>
+                  <div className="data-style">{teacher.description}</div>
+                  <div className="data-style" id="teacher-data-btn">
+                    <button onClick={handleDelete}>Delete</button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

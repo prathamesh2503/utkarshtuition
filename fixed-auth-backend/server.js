@@ -8,17 +8,20 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
 import teacherRouter from "./teacherRoutes.js";
+import studentRouter from "./studentRoutes.js";
 
 const prisma = new PrismaClient();
 
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
+//Whenever a request comes with Content-Type: application/json, automatically parse it and store it in req.body as a JavaScript object
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
 // mount teacher routes (ESM import)
 app.use(teacherRouter);
+app.use("/api", studentRouter);
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);

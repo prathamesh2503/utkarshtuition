@@ -27,3 +27,13 @@ model Teacher {
   imageUrl    String
   createdAt   DateTime @default(now())
 }
+
+model Student {
+  id Int @id @default(autoincrement()) 
+  studentName String       
+  studentStandard String
+  studentPassoutYear Int
+  studentPercentage Float
+  imageUrl    String
+  createdAt   DateTime @default(now())
+}
