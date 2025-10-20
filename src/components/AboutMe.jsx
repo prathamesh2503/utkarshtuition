@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import teacherImage from "../assets/images/teacherImage.jpg";
 
 const AboutMe = () => {
   const [teacherData, setTeacherData] = useState(null);
@@ -21,25 +20,27 @@ const AboutMe = () => {
   }, []);
 
   return (
-    <div className="about-me-container">
-      <h2>About Me</h2>
-      {teacherData && (
-        <div className="about-me-child-container">
-          <div className="about-me-image">
-            <img
-              src={teacherData.imageUrl}
-              alt="teacher image"
-              srcSet=""
-              id="about-me-teacher-image"
-            />
+    <section id="about">
+      <div className="about-me-container">
+        <h2>About Me</h2>
+        {teacherData && (
+          <div className="about-me-child-container">
+            <div className="about-me-image">
+              <img
+                src={teacherData.imageUrl}
+                alt="teacher image"
+                srcSet=""
+                id="about-me-teacher-image"
+              />
+            </div>
+            <div className="about-me-content">
+              <h3>{teacherData.name}</h3>
+              <p>{teacherData.description}</p>
+            </div>
           </div>
-          <div className="about-me-content">
-            <h3>{teacherData.name}</h3>
-            <p>{teacherData.description}</p>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </section>
   );
 };
 

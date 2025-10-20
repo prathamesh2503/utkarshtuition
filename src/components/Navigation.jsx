@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-scroll";
 const Navigation = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isNavLinksVisible, setNavLinksVisibility] = useState(false);
@@ -35,36 +35,68 @@ const Navigation = () => {
           ☰
         </button>
         <nav id="nav-links-container">
-          <a
+          <Link
+            to="home"
+            smooth={true}
+            duration={500}
+            offset={-120}
+            onClick={() => {
+              setIsExpanded(false);
+              setNavLinksVisibility(false);
+            }}
             className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#corousal"
           >
             Home
-          </a>
-          <a
+          </Link>
+          <Link
+            to="about"
+            smooth={true}
+            duration={500}
+            offset={-120}
+            onClick={() => {
+              setIsExpanded(false);
+              setNavLinksVisibility(false);
+            }}
             className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#about"
           >
             About Me
-          </a>
-          <a
+          </Link>
+          <Link
+            to="achievement"
+            smooth={true}
+            duration={500}
+            offset={-120}
+            onClick={() => {
+              setIsExpanded(false);
+              setNavLinksVisibility(false);
+            }}
             className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#achievement"
           >
             Achievements
-          </a>
-          <a
+          </Link>
+          {/* <a
             className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#blogs"
           >
             Blogs
-          </a>
-          <a
+          </a> */}
+          <Link
+            to="contact"
+            smooth={true}
+            duration={500}
+            offset={-120}
+            onClick={() => {
+              setIsExpanded(false);
+              setNavLinksVisibility(false);
+            }}
             className={`nav-link ${isNavLinksVisible ? "navLinksVisible" : ""}`}
             href="#contact-me"
           >
             Contact Me
-          </a>
+          </Link>
         </nav>
         <button id="teacher-login-btn" onClick={goToLogin}>
           Teacher Login

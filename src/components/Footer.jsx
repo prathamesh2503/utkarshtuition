@@ -1,3 +1,5 @@
+import ScrollToTop from "./ScrollToTop";
+
 const Footer = () => {
   return (
     <footer id="footer">
@@ -28,7 +30,7 @@ const Footer = () => {
 
       <p id="copyright-text">@copyrights</p>
 
-      <button id="scroll-to-top-btn">⬆️</button>
+      <ScrollToTop />
     </footer>
   );
 };

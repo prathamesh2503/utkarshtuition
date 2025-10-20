@@ -21,33 +21,37 @@ const Achievement = () => {
   }, []);
 
   return (
-    <div className="achivement-container">
-      <h2>Achievement of Students</h2>
-      <div className="achievement-cards-container">
-        {Array.isArray(students) &&
-          students.map((student) => {
-            return (
-              <div className="achievement-student-card">
-                <img
-                  src={student.imageUrl}
-                  alt="image"
-                  className="student-image"
-                />
-                <div className="student-name">Name : {student.studentName}</div>
-                <div className="student-standard">
-                  Standard : {student.studentStandard}
+    <section id="achievement">
+      <div className="achivement-container">
+        <h2>Achievement of Students</h2>
+        <div className="achievement-cards-container">
+          {Array.isArray(students) &&
+            students.map((student) => {
+              return (
+                <div className="achievement-student-card">
+                  <img
+                    src={student.imageUrl}
+                    alt="image"
+                    className="student-image"
+                  />
+                  <div className="student-name">
+                    Name : {student.studentName}
+                  </div>
+                  <div className="student-standard">
+                    Standard : {student.studentStandard}
+                  </div>
+                  <div className="student-passout-year">
+                    Passount Year : {student.studentPassoutYear}
+                  </div>
+                  <div className="student-percentage">
+                    Percentage : {student.studentPercentage}%
+                  </div>
                 </div>
-                <div className="student-passout-year">
-                  Passount Year : {student.studentPassoutYear}
-                </div>
-                <div className="student-percentage">
-                  Percentage : {student.studentPercentage}%
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

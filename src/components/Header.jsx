@@ -1,4 +1,4 @@
-import Logo from "./logo";
+import Logo from "./Logo";
 import Navigation from "./Navigation";
 const Header = () => {
   return (

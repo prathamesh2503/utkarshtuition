@@ -50,7 +50,7 @@ data = actual usable object you can work with.
 
       if (response.ok) {
         console.log(data.message);
-        navigate("/dashboard");
+        navigate("/Dashboard");
       } else {
         alert(data.message);
       }

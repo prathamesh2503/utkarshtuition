@@ -1,4 +1,4 @@
-import Logo from "./logo";
+import Logo from "./Logo";
 import DashboardMenu from "./DashboardMenu";
 import { useState, useEffect } from "react";
 const EditAboutMe = () => {

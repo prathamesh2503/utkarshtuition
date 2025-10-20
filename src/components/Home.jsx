@@ -6,11 +6,13 @@ import Footer from "./Footer";
 const Home = () => {
   return (
     <>
-      <Header />
-      <AboutMe />
-      <Achievement />
-      <ContactMe />
-      <Footer />
+      <section id="home">
+        <Header />
+        <AboutMe />
+        <Achievement />
+        <ContactMe />
+        <Footer />
+      </section>
     </>
   );
 };
