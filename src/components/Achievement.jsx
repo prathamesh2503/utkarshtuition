@@ -6,7 +6,7 @@ const Achievement = () => {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/student");
+        const res = await fetch("/api/student");
         const data = await res.json();
 
         if (data.success) {

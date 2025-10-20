@@ -7,7 +7,7 @@ const AboutMe = () => {
     // function to fetch teacher data from database
     const fetchTeacher = async () => {
       try {
-        const res = await fetch("http://localhost:4000/teacher");
+        const res = await fetch("/api/teacher");
         const data = await res.json();
         if (data.success) {
           setTeacherData(data.teacher);

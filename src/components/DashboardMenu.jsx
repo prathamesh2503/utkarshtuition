@@ -14,7 +14,7 @@ const DashboardMenu = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:4000/logout", {
+      const response = await fetch("/api/logout", {
         method: "Post",
         credentials: "include",
       });
