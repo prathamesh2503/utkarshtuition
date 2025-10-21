@@ -8,7 +8,9 @@ const AboutMe = () => {
     const fetchTeacher = async () => {
       try {
         const res = await fetch("http://localhost:4000/teacher");
+
         const data = await res.json();
+
         if (data.success) {
           setTeacherData(data.teacher);
         }

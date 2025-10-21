@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Create or update teacher data
 router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
   try {
     const { ["teacher-name"]: name, ["about-me-description"]: description } =
@@ -20,15 +21,15 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
 
     if (req.file) {
       const fileExt = req.file.originalname.split(".").pop();
-      // this creates unique file to avoid override of any other file
+      // This creates a unique file name to avoid overwriting any other file
       fileName = `${Date.now()}.${fileExt}`;
 
-      // Upload image to supabase storage
+      // Upload image to Supabase storage
       const { data, error } = await supabase.storage
         .from("teacher-images")
         .upload(fileName, req.file.buffer, {
           contentType: req.file.mimetype,
-          upsert: true, // Overright if same name
+          upsert: true, // Overwrite if same name
         });
 
       if (error) throw error;
@@ -41,14 +42,10 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
       imageUrl = publicUrlData.publicUrl;
     }
 
-    // Insert into database
+    // Insert or update teacher info in database
     const teacher = await prisma.teacher.upsert({
       where: { id: 1 },
-      update: {
-        name,
-        description,
-        imageUrl,
-      },
+      update: { name, description, imageUrl },
       create: { id: 1, name, description, imageUrl },
     });
 
@@ -60,11 +57,11 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
 });
 
 // Get route for one teacher
-
 router.get("/teacher", async (req, res) => {
   try {
     const teacher = await prisma.teacher.findUnique({ where: { id: 1 } });
-    res.json({ success: "true", teacher });
+
+    res.json({ success: true, teacher });
   } catch (error) {
     console.error("Fetch error", error);
     res.status(500).json({ success: false, error: "server error" });
@@ -85,15 +82,16 @@ router.delete("/teacher/:id", async (req, res) => {
       if (error) {
         console.log("Supabase delete error:", error.message);
       } else {
-        console.log("Image is deleted successfuly", data);
+        console.log("Image deleted successfully", data);
       }
     }
 
     const teacher = await prisma.teacher.delete({ where: { id: Number(id) } });
+
     res.json({
-      success: "true",
-      message: "Teacher and image delete successfully.",
-      teacher: teacher,
+      success: true,
+      message: "Teacher and image deleted successfully.",
+      teacher,
     });
   } catch (error) {
     console.error("Fetch error", error);

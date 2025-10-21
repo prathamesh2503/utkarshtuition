@@ -28,7 +28,7 @@ const Achievement = () => {
           {Array.isArray(students) &&
             students.map((student) => {
               return (
-                <div className="achievement-student-card">
+                <div className="achievement-student-card" key={student.id}>
                   <img
                     src={student.imageUrl}
                     alt="image"
