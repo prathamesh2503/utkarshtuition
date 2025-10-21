@@ -29,7 +29,7 @@ const TeacherLogin = () => {
 
     try {
       // Send data to backend
-      const response = await fetch("https://utkarshtuition.vercel.app/login", {
+      const response = await fetch("http://localhost:4000/login", {
         method: "POST", // method to send data to server
         headers: {
           "Content-Type": "application/json", // telling server we are sending JSON
@@ -50,7 +50,7 @@ data = actual usable object you can work with.
 
       if (response.ok) {
         console.log(data.message);
-        navigate("/Dashboard");
+        navigate("/dashboard");
       } else {
         alert(data.message);
       }
