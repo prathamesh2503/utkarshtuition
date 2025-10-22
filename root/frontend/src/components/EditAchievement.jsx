@@ -8,7 +8,7 @@ const EditAchievement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/student");
+        const res = await fetch("https://utkarshtuition.vercel.app/student");
         const data = await res.json();
         if (data.success) {
           setStudents(data.students);
@@ -68,7 +68,7 @@ const EditAchievement = () => {
 
     // Send data to backend
 
-    const response = await fetch("http://localhost:4000/api/student", {
+    const response = await fetch("https://utkarshtuition.vercel.app/student", {
       method: "Post",
       body: formData,
     });
@@ -100,7 +100,7 @@ const EditAchievement = () => {
     const encodedImagePath = encodeURIComponent(imagePath);
 
     const responseDel = await fetch(
-      `http://localhost:4000/api/student/${studentId}?imagePath=${encodedImagePath}`,
+      `https://utkarshtuition.vercel.app/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
       }

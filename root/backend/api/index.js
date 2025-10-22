@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use(helmet());
 
 // mount teacher routes (ESM import)
-app.use(teacherRouter);
-app.use("/api", studentRouter);
+app.use("/teacher", teacherRouter);
+app.use("/api/student", studentRouter);
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
