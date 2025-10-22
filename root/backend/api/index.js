@@ -16,9 +16,14 @@ const app = express();
 app.use(
   cors({
     origin: ["https://utkarshtuition.vercel.app/", process.env.FRONTEND_ORIGIN],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
+app.options("*", cors()); // Handle preflight requests
+
 //Whenever a request comes with Content-Type: application/json, automatically parse it and store it in req.body as a JavaScript object
 app.use(express.json());
 app.use(cookieParser());
