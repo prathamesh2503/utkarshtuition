@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const app = express();
 app.use(
   cors({
-    origin: ["https://utkarshtuition.vercel.app", process.env.FRONTEND_ORIGIN],
+    origin: [process.env.FRONTEND_ORIGIN],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -31,7 +31,7 @@ app.use(helmet());
 
 // mount teacher routes (ESM import)
 app.use("/teacher", teacherRouter);
-app.use("/api/student", studentRouter);
+app.use("/student", studentRouter);
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);

@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Create or update teacher data
-router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
+router.post("/", upload.single("teacher-image"), async (req, res) => {
   try {
     const { ["teacher-name"]: name, ["about-me-description"]: description } =
       req.body;
@@ -57,7 +57,7 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
 });
 
 // Get route for one teacher
-router.get("/teacher", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const teacher = await prisma.teacher.findUnique({ where: { id: 1 } });
 
@@ -69,7 +69,7 @@ router.get("/teacher", async (req, res) => {
 });
 
 // Delete teacher from database
-router.delete("/teacher/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { imagePath } = req.body;

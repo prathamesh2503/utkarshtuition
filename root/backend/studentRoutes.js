@@ -12,7 +12,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 const prisma = new PrismaClient();
 
 // Get all students data and send to frontend
-router.get("/student", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const students = await prisma.student.findMany();
     res.json({ success: true, students });
@@ -22,7 +22,7 @@ router.get("/student", async (req, res) => {
 });
 
 // Add a new student
-router.post("/student", upload.single("student-image"), async (req, res) => {
+router.post("/", upload.single("student-image"), async (req, res) => {
   try {
     const {
       ["student-name"]: studentName,
@@ -74,7 +74,7 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
 });
 
 // Delete a student
-router.delete("/student/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const studentId = req.params.id;
     const studentImagePath = decodeURIComponent(req.query.imagePath || "");
