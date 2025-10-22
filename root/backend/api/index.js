@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const app = express();
 app.use(
   cors({
-    origin: ["https://utkarshtuition.vercel.app/", process.env.FRONTEND_ORIGIN],
+    origin: ["https://utkarshtuition.vercel.app", process.env.FRONTEND_ORIGIN],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
