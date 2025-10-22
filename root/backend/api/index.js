@@ -7,8 +7,8 @@ import jwt from "jsonwebtoken";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
-import teacherRouter from "./teacherRoutes.js";
-import studentRouter from "./studentRoutes.js";
+import teacherRouter from "../teacherRoutes.js";
+import studentRouter from "../studentRoutes.js";
 
 const prisma = new PrismaClient();
 

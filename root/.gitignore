@@ -25,3 +25,4 @@ dist-ssr
 
 # Ignore env files with secrets
 .env
+.vercel
