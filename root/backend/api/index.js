@@ -13,7 +13,12 @@ import studentRouter from "../studentRoutes.js";
 const prisma = new PrismaClient();
 
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_ORIGIN, "https://utkarshtuition.vercel.app/"],
+    credentials: true,
+  })
+);
 //Whenever a request comes with Content-Type: application/json, automatically parse it and store it in req.body as a JavaScript object
 app.use(express.json());
 app.use(cookieParser());
