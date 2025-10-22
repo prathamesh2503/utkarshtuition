@@ -13,6 +13,9 @@ import studentRouter from "../studentRoutes.js";
 const prisma = new PrismaClient();
 
 const app = express();
+console.log("DEBUG: Vercel Environment Check");
+console.log("FRONTEND_ORIGIN value is:", process.env.FRONTEND_ORIGIN);
+
 app.use(
   cors({
     origin: [process.env.FRONTEND_ORIGIN],
