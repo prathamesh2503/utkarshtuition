@@ -21,13 +21,22 @@ if (!process.env.FRONTEND_ORIGIN) {
   );
 }
 
-const allowedOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
+const allowedOrigin = [
+  "https://utkarshtuition.vercel.app",
+  "http://localhost:5173",
+];
 
 app.use(
   cors({
-    origin: [allowedOrigin],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.error("Blocked by CORS:", origin);
+        return callback(new Error("Not Allowed By Cors"));
+      }
+    },
     credentials: true,
   })
 );
