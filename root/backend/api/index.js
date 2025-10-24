@@ -14,11 +14,18 @@ const prisma = new PrismaClient();
 
 const app = express();
 console.log("DEBUG: Vercel Environment Check");
-console.log("FRONTEND_ORIGIN value is:", process.env.FRONTEND_ORIGIN);
+console.log("FRONTEND_ORIGIN:", process.env.FRONTEND_ORIGIN);
+if (!process.env.FRONTEND_ORIGIN) {
+  console.warn(
+    "⚠️ FRONTEND_ORIGIN is not set — using default localhost origin"
+  );
+}
+
+const allowedOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_ORIGIN],
+    origin: [allowedOrigin],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
