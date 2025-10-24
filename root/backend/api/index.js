@@ -13,33 +13,34 @@ import studentRouter from "../studentRoutes.js";
 const prisma = new PrismaClient();
 
 const app = express();
-console.log("DEBUG: Vercel Environment Check");
-console.log("FRONTEND_ORIGIN:", process.env.FRONTEND_ORIGIN);
-if (!process.env.FRONTEND_ORIGIN) {
-  console.warn(
-    "⚠️ FRONTEND_ORIGIN is not set — using default localhost origin"
-  );
-}
+// console.log("DEBUG: Vercel Environment Check");
+// console.log("FRONTEND_ORIGIN:", process.env.FRONTEND_ORIGIN);
+// if (!process.env.FRONTEND_ORIGIN) {
+//   console.warn(
+//     "⚠️ FRONTEND_ORIGIN is not set — using default localhost origin"
+//   );
+// }
 
-const allowedOrigin = [
-  "https://utkarshtuition.vercel.app",
-  "http://localhost:5173",
-];
+// const allowedOrigin = [
+//   "https://utkarshtuition.vercel.app",
+//   "http://localhost:5173",
+// ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigin.includes(origin)) {
-        return callback(null, true);
-      } else {
-        console.error("Blocked by CORS:", origin);
-        return callback(new Error("Not Allowed By Cors"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors({ origin: true, credentials: true }));
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigin.includes(origin)) {
+//         return callback(null, true);
+//       } else {
+//         console.error("Blocked by CORS:", origin);
+//         return callback(new Error("Not Allowed By Cors"));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
 
 app.options("*", cors()); // Handle preflight requests
 
