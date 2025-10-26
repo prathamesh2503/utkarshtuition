@@ -162,4 +162,4 @@ if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   );
 }
 
-export const handler = serverless(app);
+export default serverless(app);
