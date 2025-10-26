@@ -9,6 +9,7 @@ import rateLimit from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
 import teacherRouter from "../teacherRoutes.js";
 import studentRouter from "../studentRoutes.js";
+import serverless from "serverless-http";
 
 const prisma = new PrismaClient();
 
@@ -21,26 +22,26 @@ const app = express();
 //   );
 // }
 
-// const allowedOrigin = [
-//   "https://utkarshtuition.vercel.app",
-//   "http://localhost:5173",
-// ];
+const allowedOrigin = [
+  "https://utkarshtuition.vercel.app",
+  "http://localhost:5173",
+];
 
-app.use(cors({ origin: true, credentials: true }));
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigin.includes(origin)) {
-//         return callback(null, true);
-//       } else {
-//         console.error("Blocked by CORS:", origin);
-//         return callback(new Error("Not Allowed By Cors"));
-//       }
-//     },
-//     credentials: true,
-//   })
-// );
+// app.use(cors({ origin: true, credentials: true }));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.error("Blocked by CORS:", origin);
+        return callback(new Error("Not Allowed By Cors"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.options("*", cors()); // Handle preflight requests
 
@@ -49,12 +50,19 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-// mount teacher routes (ESM import)
-app.use("/teacher", teacherRouter);
-app.use("/student", studentRouter);
-
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
+// mount teacher routes (ESM import)
+try {
+  app.use("/api/teacher", teacherRouter);
+  app.use("/api/student", studentRouter);
+} catch (err) {
+  console.error("Error mounting route:", err);
+}
+app.get("/api", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
 // Login endpoints
 
 app.post("/login", async (req, res) => {
@@ -147,8 +155,11 @@ app.post("/logout", (req, res) => {
   res.json({ message: "Logout Successfully." });
 });
 
-// app.listen(4000, () => {
-//   console.log("Server running on http://localhost:4000");
-// });
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  const port = process.env.PORT || 4000;
+  app.listen(port, () =>
+    console.log(`Server running on http://localhost:${port}`)
+  );
+}
 
-export default app;
+export const handler = serverless(app);
