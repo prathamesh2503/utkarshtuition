@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+import { rateLimit, ipKeyGenerator } from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
 import teacherRouter from "../teacherRoutes.js";
 import studentRouter from "../studentRoutes.js";
@@ -13,43 +13,37 @@ import studentRouter from "../studentRoutes.js";
 const prisma = new PrismaClient();
 const app = express();
 
-// Allowed origins for CORS
-const allowedOrigins = [
+const allowedOrigin = [
   "https://utkarshtuition.vercel.app",
   "http://localhost:5173",
 ];
 
-// CORS setup
 app.use(
   cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin.includes(origin)) {
         return callback(null, true);
+      } else {
+        return callback(new Error("Not Allowed By CORS"));
       }
-      console.error("❌ Blocked by CORS:", origin);
-      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
 
 app.options("*", cors());
-
-// Common middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-// Rate limit middleware (safe default key generator)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
+  keyGenerator: ipKeyGenerator,
 });
 app.use(limiter);
 
-// Routes
 app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter);
 
@@ -57,7 +51,6 @@ app.get("/api", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// Login route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -75,30 +68,32 @@ app.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "strict",
     });
 
-    res.json({ message: "Login successful!" });
+    res.json({ message: "Login Successful!" });
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Logout
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.json({ message: "Logout successful." });
+  res.json({ message: "Logout Successful." });
 });
 
-// Local dev mode only
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   const port = process.env.PORT || 4000;
   app.listen(port, () =>
-    console.log(`✅ Local server running on http://localhost:${port}`)
+    console.log(`Server running on http://localhost:${port}`)
   );
 }
 
-// ✅ Export app directly (not wrapped in serverless())
+// Disconnect Prisma after execution to avoid timeout
+process.on("beforeExit", async () => {
+  await prisma.$disconnect();
+});
+
 export default app;
