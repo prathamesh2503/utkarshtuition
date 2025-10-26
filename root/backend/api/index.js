@@ -5,166 +5,100 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import helmet from "helmet";
-import { rateLimit, ipKeyGenerator } from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
 import teacherRouter from "../teacherRoutes.js";
 import studentRouter from "../studentRoutes.js";
-import serverless from "serverless-http";
 
 const prisma = new PrismaClient();
-
 const app = express();
-// console.log("DEBUG: Vercel Environment Check");
-// console.log("FRONTEND_ORIGIN:", process.env.FRONTEND_ORIGIN);
-// if (!process.env.FRONTEND_ORIGIN) {
-//   console.warn(
-//     "⚠️ FRONTEND_ORIGIN is not set — using default localhost origin"
-//   );
-// }
 
-const allowedOrigin = [
+// Allowed origins for CORS
+const allowedOrigins = [
   "https://utkarshtuition.vercel.app",
   "http://localhost:5173",
 ];
 
-// app.use(cors({ origin: true, credentials: true }));
+// CORS setup
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigin.includes(origin)) {
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
-      } else {
-        console.error("Blocked by CORS:", origin);
-        return callback(new Error("Not Allowed By Cors"));
       }
+      console.error("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
 
-app.options("*", cors()); // Handle preflight requests
+app.options("*", cors());
 
-//Whenever a request comes with Content-Type: application/json, automatically parse it and store it in req.body as a JavaScript object
+// Common middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
+// Rate limit middleware (safe default key generator)
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
-  keyGenerator: ipKeyGenerator, // ✅ Safe for IPv4 & IPv6
-  message: "Too many requests, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use(limiter);
-// mount teacher routes (ESM import)
-try {
-  app.use("/api/teacher", teacherRouter);
-  app.use("/api/student", studentRouter);
-} catch (err) {
-  console.error("Error mounting route:", err);
-}
+
+// Routes
+app.use("/api/teacher", teacherRouter);
+app.use("/api/student", studentRouter);
+
 app.get("/api", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// Login endpoints
-
+// Login route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    // find user in DB
-    /*
-      findUnique()
-      findUnique() → strictly requires a unique field (e.g., id, email).
-    */
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      /* 
-  status(401) refers to the HTTP status code 401 Unauthorized.
+    if (!user) return res.status(401).json({ error: "Invalid email" });
 
-  It means:
-
-  The client (like your browser or frontend app) made a request to the server, but the server says “you are not authorized to access this resource.”
-
-  Usually it happens when:
-
-  No authentication credentials (like token, username/password) are provided.
-
-  Credentials are missing or invalid (wrong password, expired token, etc.).
-*/
-      return res.status(401).json({ error: "Invalid email" });
-    }
-
-    // compare password
     const isValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isValid) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
+    if (!isValid) return res.status(401).json({ error: "Invalid password" });
 
-    //generate JWT
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
-    /*
-A cookie is a small piece of data that a server sends to the browser.
-The browser stores it and automatically sends it back with every request to the same server.
-Cookies are often used for authentication, sessions, and tracking.
-
-HttpOnly is a flag you can set on a cookie.
-When enabled:
-The cookie cannot be accessed using JavaScript (document.cookie).
-Only the browser → server HTTP requests can carry it.
-This protects against XSS (Cross-Site Scripting) attacks where malicious JavaScript might try to steal tokens.
-
-Why Store Token in Cookie After Login?
-You need to persist the login state so the user doesn’t have to re-login on every page refresh.
-
-Conclusion 
-We store the token in a HttpOnly cookie after login because it’s safer against XSS than localStorage and ensures the backend automatically receives the authentication proof with every request.
-*/
-
-    // Store token in cookie
     res.cookie("token", token, {
-      httpOnly: true, // prevents JavaScript from accessing cookie
-      secure: false, // true in production with HTTPS
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
 
-    res.json({ message: "Login Succesful!" }); // send JSON Response
+    res.json({ message: "Login successful!" });
   } catch (error) {
     console.error(error);
-    /* 
-status(500) means your server is returning HTTP status code 500, which stands for Internal Server Error.
-
-Meaning:
-
-It indicates something went wrong on the server side, not the client side.
-
-The server couldn’t complete the request due to an unexpected error (e.g., crash, unhandled exception, database failure, etc.).
-
-Think of 500 as: “The client made a valid request, but the server failed to handle it properly.”
-*/
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// logout and listen
+// Logout
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.json({ message: "Logout Successfully." });
+  res.json({ message: "Logout successful." });
 });
 
+// Local dev mode only
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   const port = process.env.PORT || 4000;
   app.listen(port, () =>
-    console.log(`Server running on http://localhost:${port}`)
+    console.log(`✅ Local server running on http://localhost:${port}`)
   );
 }
 
-export default serverless(app);
+// ✅ Export app directly (not wrapped in serverless())
+export default app;
