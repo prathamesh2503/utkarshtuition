@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+import { rateLimit, ipKeyGenerator } from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
 import teacherRouter from "../teacherRoutes.js";
 import studentRouter from "../studentRoutes.js";
@@ -53,10 +53,8 @@ app.use(helmet());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
-  keyGenerator: (req) => {
-    // Use x-forwarded-for header (Vercel sets this)
-    return req.headers["x-forwarded-for"] || req.ip || "unknown";
-  },
+  keyGenerator: ipKeyGenerator, // ✅ Safe for IPv4 & IPv6
+  message: "Too many requests, please try again later.",
 });
 app.use(limiter);
 // mount teacher routes (ESM import)
