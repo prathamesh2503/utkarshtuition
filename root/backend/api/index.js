@@ -50,7 +50,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  keyGenerator: (req) => {
+    // Use x-forwarded-for header (Vercel sets this)
+    return req.headers["x-forwarded-for"] || req.ip || "unknown";
+  },
+});
 app.use(limiter);
 // mount teacher routes (ESM import)
 try {
