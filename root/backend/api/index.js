@@ -47,6 +47,10 @@ app.use(limiter);
 app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the backend root!");
+});
+
 app.get("/api", (req, res) => {
   res.send("Backend is running 🚀");
 });
