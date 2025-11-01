@@ -51,11 +51,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to the backend root!");
 });
 
-const path = require("path");
-app.get("/favicon.ico", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "favicon.ico"));
-});
-
 app.get("/api", (req, res) => {
   res.send("Backend is running 🚀");
 });
