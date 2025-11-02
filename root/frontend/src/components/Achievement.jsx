@@ -7,7 +7,7 @@ const Achievement = () => {
     const fetchStudent = async () => {
       try {
         const res = await fetch(
-          "https://utkarshtuition-backend.vercel.app/student"
+          "https://utkarshtuition-backend.vercel.app/api/student"
         );
         const data = await res.json();
 

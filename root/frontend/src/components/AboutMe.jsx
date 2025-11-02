@@ -8,7 +8,7 @@ const AboutMe = () => {
     const fetchTeacher = async () => {
       try {
         const res = await fetch(
-          "https://utkarshtuition-backend.vercel.app/teacher"
+          "https://utkarshtution-backend.vercel.app/api/teacher"
         );
 
         const data = await res.json();
