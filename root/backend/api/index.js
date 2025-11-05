@@ -15,7 +15,7 @@ const app = express();
 
 const allowedOrigin = [
   "https://utkarshtuition.vercel.app",
-  "http://localhost:5173",
+  "http://localhost:3000",
 ];
 
 app.use(
@@ -32,7 +32,7 @@ app.use(
   })
 );
 
-app.options("*", cors());
+// app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
