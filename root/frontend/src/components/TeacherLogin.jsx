@@ -29,14 +29,17 @@ const TeacherLogin = () => {
 
     try {
       // Send data to backend
-      const response = await fetch("http://localhost:4000/login", {
-        method: "POST", // method to send data to server
-        headers: {
-          "Content-Type": "application/json", // telling server we are sending JSON
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "include", // Important to send/receive cookies
-      });
+      const response = await fetch(
+        "https://utkarshtution-backend.vercel.app/api/login",
+        {
+          method: "POST", // method to send data to server
+          headers: {
+            "Content-Type": "application/json", // telling server we are sending JSON
+          },
+          body: JSON.stringify({ email, password }),
+          credentials: "include", // Important to send/receive cookies
+        }
+      );
 
       /*
 response = raw HTTP response (headers, status, body as stream). (Object)

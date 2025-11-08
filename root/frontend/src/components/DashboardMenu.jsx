@@ -14,10 +14,13 @@ const DashboardMenu = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:4000/logout", {
-        method: "Post",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://utkarshtution-backend.vercel.app/api/logout",
+        {
+          method: "Post",
+          credentials: "include",
+        }
+      );
       navigate("/login");
       const data = await response.json();
       console.log(data.message);
