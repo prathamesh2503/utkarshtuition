@@ -15,7 +15,7 @@ const DashboardMenu = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        "https://utkarshtution-backend.vercel.app/api/logout",
+        "https://utkarshtution-backend.vercel.app/logout",
         {
           method: "Post",
           credentials: "include",

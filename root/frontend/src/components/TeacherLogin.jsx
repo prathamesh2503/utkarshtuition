@@ -30,7 +30,7 @@ const TeacherLogin = () => {
     try {
       // Send data to backend
       const response = await fetch(
-        "https://utkarshtution-backend.vercel.app/api/login",
+        "https://utkarshtution-backend.vercel.app/login",
         {
           method: "POST", // method to send data to server
           headers: {
