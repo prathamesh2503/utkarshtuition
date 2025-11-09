@@ -13,26 +13,19 @@ import studentRouter from "../studentRoutes.js";
 const prisma = new PrismaClient();
 const app = express();
 
-const allowedOrigin = [
-  "https://utkarshtuition.vercel.app",
-  "http://localhost:3000",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigin.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not Allowed By CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://utkarshtuition.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-// app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
@@ -55,7 +48,7 @@ app.get("/api", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
@@ -72,8 +65,8 @@ app.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     });
 
     res.json({ message: "Login Successful!" });
@@ -83,7 +76,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logout Successful." });
 });
