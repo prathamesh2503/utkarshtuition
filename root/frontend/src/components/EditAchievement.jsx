@@ -8,9 +8,7 @@ const EditAchievement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch(
-          "https://utkarshtution-backend.vercel.app/api/student"
-        );
+        const res = await fetch("/api/student");
         const data = await res.json();
         if (data.success) {
           setStudents(data.students);
@@ -70,13 +68,10 @@ const EditAchievement = () => {
 
     // Send data to backend
 
-    const response = await fetch(
-      "https://utkarshtution-backend.vercel.app/api/student",
-      {
-        method: "Post",
-        body: formData,
-      }
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/student`, {
+      method: "Post",
+      body: formData,
+    });
 
     const data = await response.json();
     console.log(data);
@@ -105,7 +100,9 @@ const EditAchievement = () => {
     const encodedImagePath = encodeURIComponent(imagePath);
 
     const responseDel = await fetch(
-      `https://utkarshtution-backend.vercel.app/api/student/${studentId}?imagePath=${encodedImagePath}`,
+      `${
+        import.meta.env.VITE_API_URL
+      }/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
       }

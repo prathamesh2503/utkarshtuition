@@ -14,13 +14,10 @@ const DashboardMenu = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        "https://utkarshtution-backend.vercel.app/logout",
-        {
-          method: "Post",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
+        method: "Post",
+        credentials: "include",
+      });
       navigate("/login");
       const data = await response.json();
       console.log(data.message);

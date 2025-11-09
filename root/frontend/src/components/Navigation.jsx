@@ -22,7 +22,7 @@ const Navigation = () => {
 
   const navigate = useNavigate();
   const goToLogin = () => {
-    navigate("/Login");
+    navigate("/login");
   };
 
   return (

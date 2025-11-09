@@ -9,9 +9,7 @@ const EditAboutMe = () => {
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
-        const res = await fetch(
-          "https://utkarshtution-backend.vercel.app/api/teacher"
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/teacher`);
         const data = await res.json();
         if (data.success) {
           setTeacher(data.teacher);
@@ -30,13 +28,10 @@ const EditAboutMe = () => {
     // This line collects all the input values from the form that was submitted and stores them in a special object (formData) so you can easily use or send them.
     const formData = new FormData(e.target);
 
-    const response = await fetch(
-      "https://utkarshtution-backend.vercel.app/api/teacher",
-      {
-        method: "Post",
-        body: formData,
-      }
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/teacher`, {
+      method: "Post",
+      body: formData,
+    });
     if (!response.ok) {
       console.error("Error:", response.statusText);
     }
@@ -49,7 +44,7 @@ const EditAboutMe = () => {
   // Delete Data from database
   const handleDelete = async () => {
     const responseDel = await fetch(
-      `https://utkarshtution-backend.vercel.app/api/teacher/${teacher.id}`,
+      `${import.meta.env.VITE_API_URL}/teacher/${teacher.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

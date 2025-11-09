@@ -6,9 +6,7 @@ const Achievement = () => {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const res = await fetch(
-          "https://utkarshtution-backend.vercel.app/api/student"
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/student`);
         const data = await res.json();
 
         if (data.success) {
