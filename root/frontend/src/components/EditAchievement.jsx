@@ -8,7 +8,7 @@ const EditAchievement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch("/api/student");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/student`);
         const data = await res.json();
         if (data.success) {
           setStudents(data.students);
