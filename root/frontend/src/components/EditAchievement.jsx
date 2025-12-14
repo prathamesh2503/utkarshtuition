@@ -5,20 +5,21 @@ const EditAchievement = () => {
   const [errors, setErrors] = useState({});
   const [students, setStudents] = useState({});
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/student`);
-        const data = await res.json();
-        if (data.success) {
-          setStudents(data.students);
-        }
-      } catch (error) {
-        console.error("Error fetching students", error);
+  const fetchStudents = async () => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/student`);
+      const data = await res.json();
+      if (data.success) {
+        setStudents(data.students);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching students", error);
+    }
+  };
+
+  useEffect(() => {
     fetchStudents();
-  }, [students]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,16 +68,38 @@ const EditAchievement = () => {
     setErrors({});
 
     // Send data to backend
+    try {
+      const response = await fetch(`http://localhost:4000/api/student`, {
+        method: "POST",
+        body: formData,
+      });
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/student`, {
-      method: "Post",
-      body: formData,
-    });
+      const raw = await response.text(); //get raw text first (safer if server returns empty/HTML)
+      let data;
 
-    const data = await response.json();
-    console.log(data);
-    e.target.reset();
+      try {
+        data = raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        console.warn("Response is not JSON:", raw);
+        data = raw;
+      }
+
+      console.log("Status:", response.status, "OK:", response.ok);
+      console.log("Response data:", data);
+
+      if (!response.ok) {
+        // throw a descriptive error so you can see it in catch
+        throw new Error(
+          `Server returned ${response.status}: ${JSON.stringify(data)}`
+        );
+      }
+      e.target.reset(); // only after success
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
   };
+
+  fetchStudents();
 
   useEffect(() => {
     if (errors.studentImage) {
@@ -98,11 +121,8 @@ const EditAchievement = () => {
 
   const handleDelete = async (studentId, imagePath) => {
     const encodedImagePath = encodeURIComponent(imagePath);
-
     const responseDel = await fetch(
-      `${
-        import.meta.env.VITE_API_URL
-      }/student/${studentId}?imagePath=${encodedImagePath}`,
+      `http://localhost:4000/api/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
       }
@@ -176,8 +196,8 @@ const EditAchievement = () => {
                   <div className="data-row" key={student.id}>
                     <div className="data-style">
                       <img
-                        src={student.imageUrl}
-                        alt="image"
+                        src={`${student.imageUrl}?t=${Date.now()}`}
+                        alt="student"
                         className="student-image"
                       />
                     </div>

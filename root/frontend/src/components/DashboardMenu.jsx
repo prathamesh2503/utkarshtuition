@@ -14,7 +14,7 @@ const DashboardMenu = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
+      const response = await fetch(`http://localhost:4000/api/logout`, {
         method: "Post",
         credentials: "include",
       });
