@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import helmet from "helmet";
 import { rateLimit, ipKeyGenerator } from "express-rate-limit";
 import { PrismaClient } from "@prisma/client";
@@ -12,6 +12,10 @@ import studentRouter from "../studentRoutes.js";
 
 const prisma = new PrismaClient();
 const app = express();
+
+// Single User Login State
+
+let isLoggedIn = false;
 
 app.use(
   cors({
@@ -27,7 +31,7 @@ app.use(
 );
 
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(helmet());
 
 const limiter = rateLimit({
@@ -51,25 +55,28 @@ app.get("/api", (req, res) => {
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(401).json({ error: "Invalid email" });
 
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) return res.status(401).json({ error: "Invalid password" });
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    // const token = jwt.sign(
+    //   { userId: user.id, email: user.email },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "1h" }
+    // );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    // });
 
-    res.json({ message: "Login Successful!" });
+    isLoggedIn = true;
+
+    res.json({ message: "Login Successful!", authenticated: true });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -77,8 +84,9 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/logout", (req, res) => {
-  res.clearCookie("token");
-  res.json({ message: "Logout Successful." });
+  // res.clearCookie("token");
+  isLoggedIn = false;
+  res.json({ message: "Logout Successful.", authenticated: false });
 });
 
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {

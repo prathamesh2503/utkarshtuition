@@ -39,7 +39,7 @@ router.post("/", upload.single("teacher-image"), async (req, res) => {
         .from("teacher-images")
         .getPublicUrl(fileName);
 
-      imageUrl = publicUrlData.publicUrl;
+      imageUrl = publicUrlData.publicURL;
     }
 
     // Insert or update teacher info in database

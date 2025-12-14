@@ -22,7 +22,21 @@ router.get("/", async (req, res) => {
 });
 
 // Add a new student
+
 router.post("/", upload.single("student-image"), async (req, res) => {
+  console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+  console.log(
+    "SERVICE ROLE KEY EXISTS:",
+    !!process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
+  console.log(
+    "SUPABASE KEY PREFIX:",
+    process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 10)
+  );
+
+  console.log("CLIENT KEY PREFIX:", supabase.supabaseKey?.slice(0, 10));
+
   try {
     const {
       ["student-name"]: studentName,
@@ -34,11 +48,14 @@ router.post("/", upload.single("student-image"), async (req, res) => {
     let fileName = "";
     let imageUrl = "";
 
+    if (!req.file) {
+      return res.status(400).json({ error: "No file received by backend" });
+    }
+
     if (req.file) {
       // this creates unique file to avoid override of any other file
       const fileExt = req.file.originalname.split(".").pop();
       fileName = `${Date.now()}.${fileExt}`;
-
       // Upload image to Supabase storage
       const { data, error } = await supabase.storage
         .from("student-images")
@@ -54,9 +71,9 @@ router.post("/", upload.single("student-image"), async (req, res) => {
         .from("student-images")
         .getPublicUrl(fileName);
 
-      imageUrl = publicUrlData.publicUrl;
+      imageUrl = publicUrlData.publicURL;
     }
-
+    console.log("ImageURL:", imageUrl);
     const newStudent = await prisma.student.create({
       data: {
         studentName: studentName,
@@ -69,7 +86,8 @@ router.post("/", upload.single("student-image"), async (req, res) => {
 
     res.json({ success: true, newStudent });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("🔥 Student Upload Error:", error);
+    res.status(500).json({ error: error.message, stack: error.stack });
   }
 });
 
@@ -105,6 +123,8 @@ router.delete("/:id", async (req, res) => {
     const deleteStudent = await prisma.student.delete({
       where: { id: Number(studentId) },
     });
+
+    console.log(deleteStudent);
 
     res.json({
       success: true,
