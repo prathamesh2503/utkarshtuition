@@ -1,6 +1,7 @@
 import Logo from "./Logo";
 import DashboardMenu from "./DashboardMenu";
 import { useState, useEffect } from "react";
+const API_URL = import.meta.env.VITE_API_URL;
 const EditAboutMe = () => {
   const [teacher, setTeacher] = useState(null);
 
@@ -9,7 +10,7 @@ const EditAboutMe = () => {
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/teacher`);
+        const res = await fetch(`${API_URL}/api/teacher`);
         const data = await res.json();
         if (data.success) {
           setTeacher(data.teacher);
@@ -28,7 +29,7 @@ const EditAboutMe = () => {
     // This line collects all the input values from the form that was submitted and stores them in a special object (formData) so you can easily use or send them.
     const formData = new FormData(e.target);
 
-    const response = await fetch(`http://localhost:4000/api/teacher`, {
+    const response = await fetch(`${API_URL}/api/teacher`, {
       method: "Post",
       body: formData,
     });
@@ -43,14 +44,11 @@ const EditAboutMe = () => {
 
   // Delete Data from database
   const handleDelete = async () => {
-    const responseDel = await fetch(
-      `http://localhost:4000/api/teacher/${teacher.id}`,
-      {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imagePath: teacher.imageUrl }),
-      }
-    );
+    const responseDel = await fetch(`${API_URL}/api/teacher/${teacher.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imagePath: teacher.imageUrl }),
+    });
     const resData = await responseDel.json();
     console.log(resData);
 

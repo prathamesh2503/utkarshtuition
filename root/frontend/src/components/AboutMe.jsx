@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AboutMe = () => {
   const [teacherData, setTeacherData] = useState(null);
   // On page load useeffect will rended that teacher data for one time.
@@ -7,7 +9,7 @@ const AboutMe = () => {
     // function to fetch teacher data from database
     const fetchTeacher = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/teacher");
+        const res = await fetch(`${API_URL}/api/teacher`);
 
         const data = await res.json();
 

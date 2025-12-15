@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const TeacherLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ const TeacherLogin = () => {
 
     try {
       // Send data to backend
-      const response = await fetch("http://localhost:4000/api/login", {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: "POST", // method to send data to server
         headers: {
           "Content-Type": "application/json", // telling server we are sending JSON

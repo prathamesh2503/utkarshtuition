@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 const DashboardMenu = () => {
   const navigate = useNavigate();
   // About Me
@@ -14,7 +15,7 @@ const DashboardMenu = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/logout`, {
+      const response = await fetch(`${API_URL}/api/logout`, {
         method: "Post",
         credentials: "include",
       });

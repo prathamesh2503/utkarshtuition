@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const Achievement = () => {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/student`);
+        const res = await fetch(`${API_URL}/api/student`);
         const data = await res.json();
 
         if (data.success) {
