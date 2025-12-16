@@ -70,7 +70,7 @@ const EditAchievement = () => {
 
     // Send data to backend
     try {
-      const response = await fetch(`http://localhost:4000/api/student`, {
+      const response = await fetch(`${API_URL}/api/student`, {
         method: "POST",
         body: formData,
       });
@@ -123,7 +123,7 @@ const EditAchievement = () => {
   const handleDelete = async (studentId, imagePath) => {
     const encodedImagePath = encodeURIComponent(imagePath);
     const responseDel = await fetch(
-      `http://localhost:4000/api/student/${studentId}?imagePath=${encodedImagePath}`,
+      `${API_URL}/api/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
       }
