@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     const students = await prisma.student.findMany();
     res.json({ success: true, students });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error occured." });
   }
 });
 
