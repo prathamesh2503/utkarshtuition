@@ -1,12 +1,110 @@
-# React + Vite
+# Utkarsh Tuition 🎓
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive, full-stack web application built for Utkarsh Tuition. This platform serves as a digital portfolio to showcase tuition information, teacher credentials, and highlight the achievements of successful students.
 
-Currently, two official plugins are available:
+🚀 Live Demo - https://utkarshtuition.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📖 Purpose
 
-## Expanding the ESLint configuration
+The purpose of this web application is to provide prospective students and parents with clear, up-to-date information about the tuition center. It features a dynamic gallery of past student achievements to build trust and credibility, all easily manageable by a single administrator.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Key Features
+
+Public-Facing Landing Page: A fully responsive web page displaying tuition information, teacher background, and student success stories.
+
+Admin Dashboard: Secure authentication providing single-teacher admin login and logout functionality.
+
+Dynamic Content Management (About Me): The admin can easily add or delete details in the "About Me" section directly from the dashboard, which instantly reflects on the public frontend.
+
+Student Achievement Manager: The admin can seamlessly add, edit, or delete student data (names, scores, achievements) via the dashboard, ensuring the public webpage is always up-to-date with the latest success stories.
+
+## 💻 Tech Stack
+
+### Frontend:
+
+React.js
+
+Fetch API (for data fetching)
+
+### Backend:
+
+Node.js
+
+Express.js
+
+### Database:
+
+Supabase (PostgreSQL)
+
+### Deployment:
+
+Vercel
+
+## 🛠️ Local Development Setup
+
+To run this project on your local machine, follow these steps:
+
+Prerequisites
+
+Node.js and npm (or yarn) installed on your machine
+
+A Supabase account and project configured
+
+1. Clone the repository
+
+git clone https://github.com/prathamesh2503/utkarshtuition-local.git
+cd utkarshtuition-local
+
+
+2. Install Dependencies
+
+You will need to install dependencies for both the frontend and backend (adjust folder names if your structure differs).
+
+Backend:
+
+cd fixed-auth-backend
+npm install
+
+
+Frontend:
+cd utkarshtuition-local
+npm install
+
+
+3. Environment Variables
+
+Create a .env file in both your backend and frontend directories.
+
+Backend .env:
+
+DATABASE_URL=your_supabase_database_url
+FRONTEND_ORIGIN=your_frontend_origin_url
+JWT_SECRET=your_jwt_secret_key
+ADMIN_EMAIL=your_admin_email
+ADMIN_PASSWORD=your_user_password
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+(Note: If you used Vite to initialize your React app, your prefix will be VITE_ instead of REACT_APP_)
+
+4. Run the Application
+
+Start the Backend Server:
+
+cd fixed-auth-backend
+npm run dev
+
+
+Start the Frontend Server:
+
+cd utkarshtuition-local
+npm run dev 
+
+
+## 🗄️ Database Structure
+
+This application utilizes Supabase. The primary tables include:
+
+Teacher: Stores dynamic data for the About Me section.
+
+Student : Stores student names, grades, and year details.
