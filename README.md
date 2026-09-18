@@ -94,7 +94,6 @@ SUPABASE_URL=your_supabase_project_url
 
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-(Note: If you used Vite to initialize your React app, your prefix will be VITE_ instead of REACT_APP_)
 
 4. Run the Application
 
