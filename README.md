@@ -53,8 +53,8 @@ A Supabase account and project configured
 1. Clone the repository
 
 git clone https://github.com/prathamesh2503/utkarshtuition-local.git
-cd utkarshtuition-local
 
+cd utkarshtuition-local
 
 2. Install Dependencies
 
@@ -63,11 +63,14 @@ You will need to install dependencies for both the frontend and backend (adjust 
 Backend:
 
 cd fixed-auth-backend
+
 npm install
 
 
 Frontend:
+
 cd utkarshtuition-local
+
 npm install
 
 
@@ -78,11 +81,17 @@ Create a .env file in both your backend and frontend directories.
 Backend .env:
 
 DATABASE_URL=your_supabase_database_url
+
 FRONTEND_ORIGIN=your_frontend_origin_url
+
 JWT_SECRET=your_jwt_secret_key
+
 ADMIN_EMAIL=your_admin_email
+
 ADMIN_PASSWORD=your_user_password
+
 SUPABASE_URL=your_supabase_project_url
+
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 (Note: If you used Vite to initialize your React app, your prefix will be VITE_ instead of REACT_APP_)
@@ -92,12 +101,14 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 Start the Backend Server:
 
 cd fixed-auth-backend
+
 npm run dev
 
 
 Start the Frontend Server:
 
 cd utkarshtuition-local
+
 npm run dev 
 
 
