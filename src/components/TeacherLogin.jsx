@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 
-// component created to develop login page
 const TeacherLogin = () => {
   // hook useState used to read and update state values from input fields
   const [email, setEmail] = useState("");

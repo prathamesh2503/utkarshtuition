@@ -1,9 +1,7 @@
 import "dotenv/config";
 
-//Imports the Express.js framework, which provides routing, middleware management, and HTTP utility methods to build APIs and web applications.
 import express from "express";
 
-//Implements Cross-Origin Resource Sharing (CORS) middleware. It sets specific HTTP headers instructing browsers to permit external front-end applications (like a React app on a different port) to access this server's resources.
 import cors from "cors";
 
 //Middleware that parses the Cookie header on incoming HTTP requests and populates req.cookies with an object keyed by the cookie names, making it easier to read session IDs or auth tokens.
@@ -50,39 +48,33 @@ app.use(helmet());
 app.use(teacherRouter);
 app.use("/api", studentRouter);
 
+//This sets up express-rate-limit, a middleware used to limit repeated requests to public APIs or endpoints.
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+//Mounts this rule globally across all incoming routes.
 app.use(limiter);
-// Login endpoints
 
+//HTTP Method & Route: Sets up an Express endpoint that listens for POST requests at /login.
+//Async Handler: Declared as async to allow await calls when querying the database and hashing/comparing passwords.
 app.post("/login", async (req, res) => {
   try {
-    // console.log(req);
+    // Extract Payload: Destructures email and password sent in the JSON body of the frontend POST request (requires Express's express.json() middleware upstream).
     const { email, password } = req.body;
-    // find user in DB
-    /*
-      findUnique()
-      findUnique() → strictly requires a unique field (e.g., id, email).
-    */
+    //Database Lookup: Uses Prisma ORM to find a record in the User table matching the provided email.
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      /* 
-        status(401) refers to the HTTP status code 401 Unauthorized.
-        It means:
-        The client (like your browser or frontend app) made a request to the server, but the server says “you are not authorized to access this resource.”
-        Usually it happens when:
-        No authentication credentials (like token, username/password) are provided.
-        Credentials are missing or invalid (wrong password, expired token, etc.).
-      */
+      //If no record exists, it stops execution immediately (return) and sends an HTTP 401 Unauthorized response back to the client.
       return res.status(401).json({ error: "Invalid email" });
     }
-
-    // compare password
+    //Uses bcrypt.compare() to salt and hash the incoming plain-text password and compare it to the stored passwordHash.
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) {
+      //If they do not match, it returns an HTTP 401 Unauthorized
       return res.status(401).json({ error: "Invalid password" });
     }
-
-    //generate JWT
+    // Generate JWT: Creates a digitally signed authentication token.
+    //Payload: { userId, email } encodes non-sensitive identity info inside the token.
+    //Secret: process.env.JWT_SECRET signs the token so the server can verify later that it hasn't been tampered with.
+    //Expiration: Invalidate after 1 hour, requiring re-authentication.
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
@@ -90,49 +82,30 @@ app.post("/login", async (req, res) => {
         expiresIn: "1h",
       },
     );
+    //Set-Cookie Header: Attaches the JWT as a cookie on the client's browser:
 
-    /*
-      A cookie is a small piece of data that a server sends to the browser.
-      The browser stores it and automatically sends it back with every request to the same server.
-      Cookies are often used for authentication, sessions, and tracking.
-
-      HttpOnly is a flag you can set on a cookie.
-      When enabled:
-      The cookie cannot be accessed using JavaScript (document.cookie).
-      Only the browser → server HTTP requests can carry it.
-      This protects against XSS (Cross-Site Scripting) attacks where malicious JavaScript might try to steal tokens.
-
-      Why Store Token in Cookie After Login?
-      You need to persist the login state so the user doesn’t have to re-login on every page refresh.
-
-      Conclusion 
-      We store the token in a HttpOnly cookie after login because it’s safer against XSS than localStorage and ensures the backend automatically receives the authentication proof with every request.
-    */
-
-    // Store token in cookie
     res.cookie("token", token, {
+      //httpOnly: true: Blocks client-side scripts (document.cookie) from reading the cookie, mitigating Cross-Site Scripting (XSS) attacks.
       httpOnly: true, // prevents JavaScript from accessing cookie
-      secure: false, // true in production with HTTPS
+      //secure: false: Allows transmission over unencrypted HTTP (local development). In production, this should be true so cookies only travel over HTTPS.
+      secure: true, // true in production with HTTPS
+      //sameSite: "strict": Prevents the browser from sending this cookie along with cross-site requests, mitigating Cross-Site Request Forgery (CSRF).
       sameSite: "strict",
     });
-
+    //Returns an HTTP 200 OK (default) with a success JSON message.
     res.json({ message: "Login Succesful!" }); // send JSON Response
   } catch (error) {
-    console.error(error);
-    /* 
-      status(500) means your server is returning HTTP status code 500, which stands for Internal Server Error.
-      Meaning:
-      It indicates something went wrong on the server side, not the client side.
-      The server couldn’t complete the request due to an unexpected error (e.g., crash, unhandled exception, database failure, etc.).
-      Think of 500 as: “The client made a valid request, but the server failed to handle it properly.”
-    */
+    //Error Handling: Catches unexpected failures (database down, missing environment variable, syntax errors) and returns an HTTP 500 Internal Server Error without leaking server stack traces to the client.
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// logout and listen
+//HTTP Method & Route: Listens for incoming POST requests at /logout.
 app.post("/logout", (req, res) => {
+  //Clears the Cookie: Sends a Set-Cookie header in the HTTP response instructing the browser to delete the cookie named "token".
+  //How it works under the hood: The server cannot directly delete files on the client's device. Instead, Express sets the cookie's expiration date to a time in the past (e.g., Expires=Thu, 01 Jan 1970 00:00:00 GMT) with an empty value. When the browser sees an expired timestamp, it immediately discards the stored cookie.
   res.clearCookie("token");
+  //Client Response: Sends a standard HTTP 200 OK status with a JSON object confirming that the logout succeeded, allowing the frontend to update its UI (e.g., redirect to the login page or clear user state).
   res.json({ message: "Logout Successfully." });
 });
 
