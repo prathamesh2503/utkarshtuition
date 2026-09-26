@@ -6,11 +6,9 @@ import supabase from "./supabaseClient.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// multer: Keeps files in memory (RAM) as buffer object instead of local disk.
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Create or update teacher data
 router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
   try {
     console.log(req.body);
@@ -23,20 +21,18 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
 
     if (req.file) {
       const fileExt = req.file.originalname.split(".").pop();
-      // This creates a unique file name to avoid overwriting any other file
+
       fileName = `${Date.now()}.${fileExt}`;
 
-      // Upload image to Supabase storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("teacher-images")
         .upload(fileName, req.file.buffer, {
           contentType: req.file.mimetype,
-          upsert: true, // Overwrite if same name
+          upsert: true,
         });
 
       if (error) throw error;
 
-      // Generate a public URL for uploaded image
       const { data: publicUrlData } = supabase.storage
         .from("teacher-images")
         .getPublicUrl(fileName);
@@ -44,7 +40,6 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
       imageUrl = publicUrlData.publicUrl;
     }
 
-    // Insert or update teacher info in database
     const teacher = await prisma.teacher.upsert({
       where: { id: 1 },
       update: { name, description, imageUrl },
@@ -58,7 +53,6 @@ router.post("/teacher", upload.single("teacher-image"), async (req, res) => {
   }
 });
 
-// Get route for one teacher
 router.get("/teacher", async (req, res) => {
   try {
     const teacher = await prisma.teacher.findUnique({ where: { id: 1 } });
@@ -70,7 +64,6 @@ router.get("/teacher", async (req, res) => {
   }
 });
 
-// Delete teacher from database
 router.delete("/teacher/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -101,5 +94,4 @@ router.delete("/teacher/:id", async (req, res) => {
   }
 });
 
-// ✅ Use ESM default export (not CommonJS)
 export default router;

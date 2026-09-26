@@ -8,7 +8,9 @@ const EditAchievement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/student");
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/student`,
+        );
         const data = await res.json();
         if (data.success) {
           setStudents(data.students);
@@ -24,14 +26,13 @@ const EditAchievement = () => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    // Get values from FormData
+
     const studentImage = formData.get("student-image");
     const studentName = formData.get("student-name");
     const studentStandard = formData.get("student-standard");
     const studentPassoutYear = formData.get("student-passout-year");
     const studentPercentage = formData.get("student-percentage");
 
-    // Validation
     const newErrors = {};
 
     if (studentImage.name === "") {
@@ -66,12 +67,13 @@ const EditAchievement = () => {
 
     setErrors({});
 
-    // Send data to backend
-
-    const response = await fetch("http://localhost:4000/api/student", {
-      method: "Post",
-      body: formData,
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/student`,
+      {
+        method: "Post",
+        body: formData,
+      },
+    );
 
     const data = await response.json();
     console.log(data);
@@ -100,10 +102,10 @@ const EditAchievement = () => {
     const encodedImagePath = encodeURIComponent(imagePath);
 
     const responseDel = await fetch(
-      `http://localhost:4000/api/student/${studentId}?imagePath=${encodedImagePath}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
-      }
+      },
     );
 
     const data = await responseDel.json();

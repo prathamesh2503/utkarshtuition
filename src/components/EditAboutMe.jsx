@@ -4,13 +4,11 @@ import { useState, useEffect } from "react";
 const EditAboutMe = () => {
   const [teacher, setTeacher] = useState(null);
 
-  // Witout useEffect only UI renders but with useEffect it render updated teacher data when page loads.
-
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
         const res = await fetch(
-          "https://utkarshtuition-backend.vercel.app/api/teacher",
+          `${import.meta.env.VITE_BACKEND_URL}/api/teacher`,
         );
         const data = await res.json();
         if (data.success) {
@@ -24,20 +22,19 @@ const EditAboutMe = () => {
       }
     };
     fetchTeacher();
-  }, []); // empty array means run only once on page load
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // This line collects all the input values from the form that was submitted and stores them in a special object (formData) so you can easily use or send them.
-    const formData = new FormData(e.target);
-    console.log(formData);
+    const teacherFormData = new FormData(e.target);
+    console.log(teacherFormData);
 
     const response = await fetch(
-      "https://utkarshtuition-backend.vercel.app/api/teacher",
+      `${import.meta.env.VITE_BACKEND_URL}/api/teacher`,
       {
         method: "POST",
-        body: formData,
+        body: teacherFormData,
       },
     );
     if (!response.ok) {
@@ -46,13 +43,12 @@ const EditAboutMe = () => {
 
     const data = await response.json();
     setTeacher(data.teacher);
-    e.target.reset(); // ✅ clear form inputs
+    e.target.reset();
   };
 
-  // Delete Data from database
   const handleDelete = async () => {
     const responseDel = await fetch(
-      `https://utkarshtuition-backend.vercel.app/api/teacher/${teacher.id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/teacher/${teacher.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -62,7 +58,7 @@ const EditAboutMe = () => {
     const resData = await responseDel.json();
     console.log(resData);
 
-    setTeacher(null); // Clear UI
+    setTeacher(null);
   };
 
   return (

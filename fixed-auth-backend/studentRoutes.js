@@ -3,25 +3,21 @@ import multer from "multer";
 import { PrismaClient } from "@prisma/client";
 import supabase from "./supabaseClient.js";
 
-// router = a mini Express app used to organize routes and middleware, later mounted on the main app.
 const router = express.Router();
 
-// multer: Keeps files in memory (RAM) as buffer object instead of local disk.
 const upload = multer({ storage: multer.memoryStorage() });
 
 const prisma = new PrismaClient();
 
-// Get all students data and send to frontend
 router.get("/student", async (req, res) => {
   try {
     const students = await prisma.student.findMany();
     res.json({ success: true, students });
-  } catch (error) {
+  } catch {
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
-// Add a new student
 router.post("/student", upload.single("student-image"), async (req, res) => {
   try {
     const {
@@ -31,28 +27,25 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
       ["student-percentage"]: studentPercentage,
     } = req.body;
 
-    let fileName = "";
+    let imageFileName = "";
     let imageUrl = "";
 
     if (req.file) {
-      // this creates unique file to avoid override of any other file
-      const fileExt = req.file.originalname.split(".").pop();
-      fileName = `${Date.now()}.${fileExt}`;
+      const imageFileExt = req.file.originalname.split(".").pop();
+      imageFileName = `${Date.now()}.${imageFileExt}`;
 
-      // Upload image to Supabase storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("student-images")
-        .upload(fileName, req.file.buffer, {
+        .upload(imageFileName, req.file.buffer, {
           contentType: req.file.mimetype,
-          upsert: true, // Overwrite if same name
+          upsert: true,
         });
 
       if (error) throw error;
 
-      // Generate a public URL for uploaded image
       const { data: publicUrlData } = supabase.storage
         .from("student-images")
-        .getPublicUrl(fileName);
+        .getPublicUrl(imageFileName);
 
       imageUrl = publicUrlData.publicUrl;
     }
@@ -73,7 +66,6 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
   }
 });
 
-// Delete a student
 router.delete("/student/:id", async (req, res) => {
   try {
     const studentId = req.params.id;
@@ -86,7 +78,7 @@ router.delete("/student/:id", async (req, res) => {
     const shortPath = studentImagePath
       ? studentImagePath.replace(
           "https://fshziwpwjtcmuogjlemy.supabase.co/storage/v1/object/public/student-images/",
-          ""
+          "",
         )
       : null;
 
