@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(teacherRouter);
-app.use("/api", studentRouter);
+app.use(studentRouter);
 
 const requestRateLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(requestRateLimiter);

@@ -33,6 +33,9 @@ const AboutMe = () => {
                 alt="teacher image"
                 srcSet=""
                 id="about-me-teacher-image"
+                width="150px"
+                height="100%"
+                fetchpriority="high"
               />
             </div>
             <div className="about-me-content">
