@@ -20,6 +20,8 @@ router.get("/student", async (req, res) => {
 
 router.post("/student", upload.single("student-image"), async (req, res) => {
   try {
+    console.log(req.body);
+
     const {
       ["student-name"]: studentName,
       ["student-standard"]: studentStandard,
@@ -42,7 +44,7 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
         });
 
       if (error) throw error;
-
+      console.log(error);
       const { data: publicUrlData } = supabase.storage
         .from("student-images")
         .getPublicUrl(imageFileName);
@@ -62,6 +64,7 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
 
     res.json({ success: true, newStudent });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 });

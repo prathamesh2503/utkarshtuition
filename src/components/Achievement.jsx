@@ -32,7 +32,10 @@ const Achievement = () => {
                   <img
                     src={student.imageUrl}
                     alt="image"
-                    className="student-image"
+                    margin="5px"
+                    width="90px"
+                    height="90px"
+                    loading="lazy"
                   />
                   <div className="student-name">
                     Name : {student.studentName}

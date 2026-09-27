@@ -1,4 +1,4 @@
-import utkarshTuitionLogo from "../assets/images/utkarshTuitionLogo.png";
+import utkarshTuitionLogo from "../assets/images/utkarshTuitionLogo.webp";
 const Logo = () => {
   return (
     <div id="logo-container">

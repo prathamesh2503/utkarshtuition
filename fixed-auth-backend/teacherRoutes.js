@@ -6,7 +6,7 @@ import supabase from "./supabaseClient.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-const allowedImageTypes = ["image/webpg", "image/png", "image/jpg"];
+const allowedImageTypes = ["image/webp", "image/png", "image/jpg"];
 
 const imageFileFilter = (req, file, cb) => {
   if (allowedImageTypes.includes(file.mimetype)) {
@@ -24,7 +24,7 @@ const upload = multer({
 router.post("/teacher", async (req, res) => {
   upload.single("teacher-image")(req, res, async (err) => {
     if (err) {
-      if (err.message === "INVALID_MIME_TYPE") {
+      if (err.message === "Invalid_Meme_Type") {
         return res.status(415).json({
           statusCode: "415",
           error: "invalid_mime_type",
@@ -33,6 +33,7 @@ router.post("/teacher", async (req, res) => {
           code: "InvalidMimeType",
         });
       }
+      console.log(err);
 
       return res.status(400).json({ success: false, error: err.message });
     }

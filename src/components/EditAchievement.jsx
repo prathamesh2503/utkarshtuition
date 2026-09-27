@@ -176,7 +176,9 @@ const EditAchievement = () => {
                       <img
                         src={student.imageUrl}
                         alt="image"
-                        className="student-image"
+                        margin="5px"
+                        width="90px"
+                        height="90px"
                       />
                     </div>
                     <div className="data-style">{student.studentName}</div>
