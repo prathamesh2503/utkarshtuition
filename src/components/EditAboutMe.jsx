@@ -7,9 +7,7 @@ const EditAboutMe = () => {
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/teacher`,
-        );
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/teacher`);
         const data = await res.json();
         if (data.success) {
           setTeacher(data.teacher);
@@ -31,7 +29,7 @@ const EditAboutMe = () => {
     console.log(teacherFormData);
 
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/teacher`,
+      `${import.meta.env.VITE_BACKEND_URL}/teacher`,
       {
         method: "POST",
         body: teacherFormData,
@@ -48,7 +46,7 @@ const EditAboutMe = () => {
 
   const handleDelete = async () => {
     const responseDel = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/teacher/${teacher.id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/teacher/${teacher.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

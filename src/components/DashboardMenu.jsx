@@ -15,7 +15,7 @@ const DashboardMenu = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/logout`,
+        `${import.meta.env.VITE_BACKEND_URL}/logout`,
         {
           method: "Post",
           credentials: "include",

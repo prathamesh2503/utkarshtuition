@@ -30,7 +30,7 @@ const TeacherLogin = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
           method: "POST",
 

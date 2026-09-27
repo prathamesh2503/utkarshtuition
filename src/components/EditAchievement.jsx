@@ -8,9 +8,7 @@ const EditAchievement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/student`,
-        );
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/student`);
         const data = await res.json();
         if (data.success) {
           setStudents(data.students);
@@ -68,7 +66,7 @@ const EditAchievement = () => {
     setErrors({});
 
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/student`,
+      `${import.meta.env.VITE_BACKEND_URL}/student`,
       {
         method: "Post",
         body: formData,
@@ -102,7 +100,7 @@ const EditAchievement = () => {
     const encodedImagePath = encodeURIComponent(imagePath);
 
     const responseDel = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/student/${studentId}?imagePath=${encodedImagePath}`,
+      `${import.meta.env.VITE_BACKEND_URL}/student/${studentId}?imagePath=${encodedImagePath}`,
       {
         method: "DELETE",
       },
