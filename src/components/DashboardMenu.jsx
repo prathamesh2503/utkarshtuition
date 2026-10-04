@@ -1,4 +1,7 @@
+// import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 const DashboardMenu = () => {
   const navigate = useNavigate();
   // About Me
@@ -11,23 +14,12 @@ const DashboardMenu = () => {
     navigate("/editAchievement");
   };
 
+  const { logout } = useAuth();
+
   // Logout
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/logout`,
-        {
-          method: "Post",
-          credentials: "include",
-        },
-      );
-      navigate("/login");
-      const data = await response.json();
-      console.log(data.message);
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
+  // const handleLogout = async () => {
+
+  // };
   return (
     <div className="dashboard-menu-container">
       <h5 className="dashboard-menu" onClick={handleAboutMe}>
@@ -36,7 +28,7 @@ const DashboardMenu = () => {
       <h5 className="dashboard-menu" onClick={handleAchievement}>
         Edit Achievements
       </h5>
-      <h5 className="dashboard-menu" onClick={handleLogout}>
+      <h5 className="dashboard-menu" onClick={logout}>
         Logout
       </h5>
     </div>

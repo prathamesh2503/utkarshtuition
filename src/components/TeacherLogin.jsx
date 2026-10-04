@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const TeacherLogin = () => {
+  const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,6 +15,7 @@ const TeacherLogin = () => {
   const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const handleSubmit = async (e) => {
+    console.log("Submit clicked!");
     e.preventDefault();
 
     let validateErrors = {};
@@ -33,24 +36,18 @@ const TeacherLogin = () => {
         `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify({ email, password }),
-
           credentials: "include",
         },
       );
 
       const data = await response.json();
-      console.log(response);
-      console.log(response.ok);
       console.log(data);
-
       if (response.ok) {
-        console.log(data.message);
+        setUser(data.message);
         navigate("/Dashboard");
       } else {
         alert(data.message);
@@ -66,12 +63,7 @@ const TeacherLogin = () => {
       <main className="login-page">
         <h3>Teacher Login</h3>
 
-        <form
-          action=""
-          className="login-form"
-          id="login-form"
-          onSubmit={handleSubmit}
-        >
+        <form className="login-form" id="login-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email: </label>
           <input
             type="email"

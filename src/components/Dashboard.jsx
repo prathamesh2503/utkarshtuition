@@ -1,7 +1,17 @@
 import Logo from "./Logo";
 import DashboardMenu from "./DashboardMenu";
-
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 const Dashboard = () => {
+  const { user, isLoading } = useAuth();
+  console.log("User state in Dashboard is:", user);
+  if (isLoading) {
+    return <div>Loading session wait..</div>;
+  }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
     <>
       <header id="main-header">
