@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(teacherRouter);
 app.use(studentRouter);
 
-const requestRateLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const requestRateLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100, validate: { xForwardedForHeader: false } });
 app.use(requestRateLimiter);
 
 app.post("/login", async (loginReq, loginRes) => {
