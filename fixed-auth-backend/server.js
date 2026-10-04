@@ -13,6 +13,11 @@ import studentRouter from "./studentRoutes.js";
 
 const prisma = new PrismaClient();
 const app = express();
+
+app.get("/", (req, res) => {
+  res.status(200).send("Utkarsh Tuition Backend is running!");
+});
+
 app.set("trust proxy", 1);
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
 app.use(express.json());
