@@ -53,6 +53,25 @@ app.post("/login", async (loginReq, loginRes) => {
     loginRes.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.get("/verify", (req, res) => {
+  console.log("Cookies received:", req.cookies);
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "No token found!" });
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    if (decodedToken) {
+      res.status(200).json({ message: "Token verified" });
+    }
+    console.log(decodedToken);
+  } catch (error) {
+    console.error("JWT Verification Error:", error.message);
+    res.status(401).json({ message: "invalid or expired token" });
+  }
+});
+
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logout Successfully." });

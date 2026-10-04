@@ -24,7 +24,7 @@ Student Achievement Manager: The admin can seamlessly add, edit, or delete stude
 
 React.js
 
-Fetch API (for data fetching)
+REST API (for data fetching)
 
 ### Backend:
 
@@ -66,13 +66,11 @@ cd fixed-auth-backend
 
 npm install
 
-
 Frontend:
 
 cd utkarshtuition-local
 
 npm install
-
 
 3. Environment Variables
 
@@ -94,7 +92,6 @@ SUPABASE_URL=your_supabase_project_url
 
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-
 4. Run the Application
 
 Start the Backend Server:
@@ -103,13 +100,11 @@ cd fixed-auth-backend
 
 npm run dev
 
-
 Start the Frontend Server:
 
 cd utkarshtuition-local
 
-npm run dev 
-
+npm run dev
 
 ## 🗄️ Database Structure
 
@@ -126,5 +121,3 @@ Student : Stores student names, grades, and year details.
 <img width="1365" height="723" alt="image" src="https://github.com/user-attachments/assets/2e74346c-4f4c-46d8-a2f1-ecc609b8477b" />
 
 <img width="1354" height="594" alt="image" src="https://github.com/user-attachments/assets/5df21f6f-19a9-4dd6-a6a8-ed0e4dba2cb7" />
-
-
