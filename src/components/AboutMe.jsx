@@ -7,7 +7,7 @@ const AboutMe = () => {
     // function to fetch teacher data from database
     const fetchTeacher = async () => {
       try {
-        const res = await fetch(`${import.meta.env.BACKEND_URL}/teacher`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/teacher`);
 
         const data = await res.json();
 
