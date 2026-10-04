@@ -76,6 +76,12 @@ app.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logout Successfully." });
 });
-app.listen(4000, () => {
-  console.log("Server running on http://localhost:4000");
-});
+
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 4000;
+  app.listen(4000, () => {
+    console.log(`Server running on Port ${PORT}`);
+  });
+}
+
+export default app;
