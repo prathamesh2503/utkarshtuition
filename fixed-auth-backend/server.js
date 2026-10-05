@@ -27,7 +27,7 @@ app.use(helmet());
 app.use(teacherRouter);
 app.use(studentRouter);
 
-const requestRateLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const requestRateLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100, validate: { xForwardedForHeader: false } });
 app.use(requestRateLimiter);
 
 app.post("/login", async (loginReq, loginRes) => {
@@ -80,6 +80,12 @@ app.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logout Successfully." });
 });
-app.listen(4000, () => {
-  console.log("Server running on http://localhost:4000");
-});
+
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 4000;
+  app.listen(4000, () => {
+    console.log(`Server running on Port ${PORT}`);
+  });
+}
+
+export default app;
