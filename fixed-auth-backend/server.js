@@ -60,7 +60,6 @@ app.post("/login", async (loginReq, loginRes) => {
 });
 
 app.get("/verify", (req, res) => {
-  console.log("Cookies received:", req.cookies);
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ message: "No token found!" });
