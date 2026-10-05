@@ -51,7 +51,7 @@ app.post("/login", async (loginReq, loginRes) => {
     loginRes.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
     });
     loginRes.json({ message: "Login Succesful!" });
   } catch {
