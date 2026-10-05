@@ -1,7 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import process from "node:process";
 
-// const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // console.log("Key defined?", Boolean(key));
 // console.log("Parts count (should be 3):", key?.split(".").length);
 // console.log("Last 5 chars:", key?.slice(-5));

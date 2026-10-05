@@ -14,6 +14,11 @@ import studentRouter from "./studentRoutes.js";
 const prisma = new PrismaClient();
 const app = express();
 
+app.get("/", (req, res) => {
+  res.status(200).send("Utkarsh Tuition Backend is running!");
+});
+
+app.set("trust proxy", 1);
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -46,7 +51,7 @@ app.post("/login", async (loginReq, loginRes) => {
     loginRes.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
     });
     loginRes.json({ message: "Login Succesful!" });
   } catch {
@@ -55,7 +60,6 @@ app.post("/login", async (loginReq, loginRes) => {
 });
 
 app.get("/verify", (req, res) => {
-  console.log("Cookies received:", req.cookies);
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ message: "No token found!" });
