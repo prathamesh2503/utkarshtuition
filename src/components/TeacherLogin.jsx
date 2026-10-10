@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -7,6 +7,12 @@ const TeacherLogin = () => {
   const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const emailRef = useRef();
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -69,6 +75,7 @@ const TeacherLogin = () => {
             type="email"
             name="email"
             id="email"
+            ref={emailRef}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label htmlFor="password">Password: </label>
