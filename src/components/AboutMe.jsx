@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import AboutMeSkeleton from "../skeleton/AboutMeSkeleton";
 
 const AboutMe = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [teacherData, setTeacherData] = useState(null);
   // On page load useeffect will rended that teacher data for one time.
   useEffect(() => {
@@ -16,6 +18,8 @@ const AboutMe = () => {
         }
       } catch (error) {
         console.error("Error fetching teacher:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchTeacher();
@@ -25,7 +29,9 @@ const AboutMe = () => {
     <section id="about">
       <div className="about-me-container">
         <h2>About Me</h2>
-        {teacherData && (
+        {isLoading ? (
+          <AboutMeSkeleton />
+        ) : teacherData ? (
           <div className="about-me-child-container">
             <div className="about-me-image">
               <img
@@ -42,6 +48,8 @@ const AboutMe = () => {
               <p>{teacherData.description}</p>
             </div>
           </div>
+        ) : (
+          <p>Teacher data is not available.</p>
         )}
       </div>
     </section>
