@@ -1,7 +1,16 @@
 function AboutMeSkeleton() {
   return (
     <div className="about-me-child-container about-me-skeleton-container">
-      <h4>Loading data...</h4>
+      <div className="about-me-image">
+        {/* Placeholder for the image */}
+        <div className="about-me-skeleton-box skeleton-avatar"></div>
+      </div>
+      <div className="about-me-content">
+        {/* Placeholder for the h3 name */}
+        <div className="about-me-skeleton-box skeleton-title"></div>
+        {/* Placeholders for the description text lines */}
+        <div className="about-me-skeleton-box skeleton-text"></div>
+      </div>
     </div>
   );
 }
