@@ -4,7 +4,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: rgb(245, 216, 220);
+  background-color: whitesmoke;
   margin: 0px;
   padding: 0px;
 }
@@ -23,7 +23,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: lightblue;
+  background-color: lightcoral;
 }
 
 #logo-container {
@@ -42,7 +42,7 @@ a {
   height: 30px;
   display: flex;
   justify-content: center;
-  background-color: lightblue;
+  background-color: lightcoral;
   transition: height 0.3s ease;
 }
 
@@ -75,6 +75,7 @@ a {
 #teacher-login-btn {
   position: absolute;
   right: 20px;
+  bottom: 8px;
   cursor: pointer;
   border: 0px;
   border-radius: 3px;
@@ -87,15 +88,17 @@ a {
   text-align: center;
 }
 .about-me-child-container {
-  padding: 10px;
+  width: 80%;
+  height: 400px;
+  padding: 30px;
   margin: 15px;
+  justify-self: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px;
-  background-color: lemonchiffon;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: rgb(247, 203, 244);
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
 }
 .about-me-image {
   width: 150px;
@@ -103,7 +106,22 @@ a {
 }
 
 .about-me-content {
+  width: 100%;
+  height: 50%;
   margin: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-me-heading {
+  margin-top: 10px;
+  height: 40px;
+  width: 50%;
+}
+
+.about-me-description {
+  font-size: 14px;
 }
 
 /* Achievement Section */
@@ -112,21 +130,53 @@ a {
   text-align: center;
 }
 
+.achievement-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+}
+
+.achievement-filter select,
+.achievement-filter button {
+  padding: 8px 12px;
+  font: inherit;
+}
+
+.achievement-filter button {
+  cursor: pointer;
+}
+
 .achievement-cards-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 50px;
+  justify-content: center;
+  justify-self: center;
+  padding: 20px 20px;
+  background-color: rgb(247, 203, 244);
+  width: 80%;
+  height: auto;
+  font-size: 14px;
+}
+
+.achievement-empty-state {
+  margin: 0;
 }
 
 .achievement-student-card {
-  height: 200px;
+  height: auto;
+  padding: 10px;
   width: 200px;
-  background-color: bisque;
+  background-color: lightcoral;
   box-shadow:
     rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  border-radius: 30px;
 }
 
 /* Login Page Css  */
@@ -309,6 +359,11 @@ a {
   cursor: pointer;
   background-color: transparent;
 }
+.about-me-skeleton-box {
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
 
 .about-me-skeleton-container {
   padding: 10px;
@@ -318,22 +373,28 @@ a {
   justify-content: center;
   align-items: center;
   gap: 50px;
-  background-color: lemonchiffon;
+  background-color: rgb(247, 203, 244);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.about-me-skeleton-image {
+
+.skeleton-avatar {
   width: 150px;
-  height: 180px;
+  height: 100%;
 }
 
-.about-me-skeleton-content {
-  margin: 0px 10px;
+/* Match heading line height */
+.skeleton-title {
+  margin-top: 10px;
+  height: 40px;
+  width: 50%;
 }
 
-.about-me-skeleton-box {
-  background-color: #e2e8f0;
-  border-radius: 4px;
-  animation: pulse 1.5s ease-in-out infinite;
+/* Match paragraph lines */
+.skeleton-text {
+  margin-top: 10px;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 8px;
 }
 
 @keyframes pulse {
@@ -377,8 +438,8 @@ a {
 
   .about-me-child-container {
     display: flex;
+    height: auto;
     flex-direction: row;
-    margin: 0px 100px;
   }
 
   .data-scroll {
@@ -390,9 +451,14 @@ a {
   .achievement-cards-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
+    justify-self: center;
+    padding: 20px 20px;
+    background-color: rgb(247, 203, 244);
+    width: 80%;
+    height: auto;
   }
   .about-me-skeleton-container {
     display: flex;
@@ -401,7 +467,7 @@ a {
   }
 
   .about-me-skeleton-box {
-    background-color: #619deb;
+    background-color: #e2e8f0;
     border-radius: 4px;
     animation: pulse 1.5s ease-in-out infinite;
   }

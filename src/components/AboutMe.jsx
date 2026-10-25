@@ -44,8 +44,12 @@ const AboutMe = () => {
               />
             </div>
             <div className="about-me-content">
-              <h3>{teacherData.name}</h3>
-              <p>{teacherData.description}</p>
+              <div className="about-me-heading">
+                <h3>{teacherData.name}</h3>
+              </div>
+              <div className="about-me-description">
+                <p>{teacherData.description}</p>
+              </div>
             </div>
           </div>
         ) : (
