@@ -3,7 +3,8 @@ import DashboardMenu from "./DashboardMenu";
 import { useState, useEffect } from "react";
 const EditAboutMe = () => {
   const [teacher, setTeacher] = useState(null);
-
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
@@ -24,7 +25,7 @@ const EditAboutMe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const form = e.currentTarget;
     const teacherFormData = new FormData(e.target);
     console.log(teacherFormData);
 
@@ -41,9 +42,16 @@ const EditAboutMe = () => {
 
     const data = await response.json();
     setTeacher(data.teacher);
-    e.target.reset();
+    setName("");
+    setDescription("");
+    form.elements["teacher-image"].value = "";
   };
 
+  const handleEdit = async () => {
+    if (!teacher) return;
+    setName(teacher.name ?? "");
+    setDescription(teacher.description ?? "");
+  };
   const handleDelete = async () => {
     const responseDel = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/teacher/${teacher.id}`,
@@ -79,13 +87,21 @@ const EditAboutMe = () => {
             </div>
             <div className="form-row">
               <label htmlFor="teacher-name">Full Name</label>
-              <input type="text" name="teacher-name" id="teacher-name" />
+              <input
+                type="text"
+                name="teacher-name"
+                id="teacher-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className="form-row">
               <label htmlFor="about-me-description">About Me Description</label>
               <textarea
                 name="about-me-description"
                 id="about-me-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
             <input type="submit" value="Submit" />
@@ -98,7 +114,7 @@ const EditAboutMe = () => {
                 <div className="data-style">Teacher Image</div>
                 <div className="data-style">Teacher Name</div>
                 <div className="data-style">About Me Description</div>
-                <div className="data-style">Add/Delete</div>
+                <div className="data-style">Edit/Delete</div>
               </div>
               {teacher && (
                 <div className="data-row">
@@ -113,6 +129,7 @@ const EditAboutMe = () => {
                   <div className="data-style"> {teacher.name}</div>
                   <div className="data-style">{teacher.description}</div>
                   <div className="data-style" id="teacher-data-btn">
+                    <button onClick={handleEdit}>Edit</button>
                     <button onClick={handleDelete}>Delete</button>
                   </div>
                 </div>

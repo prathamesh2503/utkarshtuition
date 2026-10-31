@@ -6,7 +6,12 @@ import supabase from "./supabaseClient.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-const allowedImageTypes = ["image/webp", "image/png", "image/jpg"];
+const allowedImageTypes = [
+  "image/webp",
+  "image/png",
+  "image/jpg",
+  "image/jpeg",
+];
 
 const imageFileFilter = (req, file, cb) => {
   if (allowedImageTypes.includes(file.mimetype)) {
@@ -28,8 +33,7 @@ router.post("/teacher", async (req, res) => {
         return res.status(415).json({
           statusCode: "415",
           error: "invalid_mime_type",
-          message:
-            "MIME type image/webp is not supported (Only JPEG, PNG, and WebP are allowed)",
+          message: "(Only JPEG, PNG, and WebP are allowed)",
           code: "InvalidMimeType",
         });
       }
@@ -41,7 +45,11 @@ router.post("/teacher", async (req, res) => {
       const { ["teacher-name"]: name, ["about-me-description"]: description } =
         req.body;
 
-      let imageUrl = "";
+      const existingTeacher = await prisma.teacher.findUnique({
+        where: { id: 1 },
+      });
+
+      let imageUrl = existingTeacher?.imageUrl ?? "";
       let fileName = "";
 
       if (req.file) {
