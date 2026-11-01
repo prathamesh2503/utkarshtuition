@@ -56,7 +56,7 @@ const TeacherLogin = () => {
         setUser(data.message);
         navigate("/Dashboard");
       } else {
-        alert(data.message);
+        console.log(data.message);
       }
     } catch (error) {
       console.error("Error", error);
