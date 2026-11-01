@@ -91,7 +91,14 @@ const TeacherLogin = () => {
         {/* Conditional operator used to show text */}
         {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
         {errors.password && (
-          <p style={{ color: "red", fontSize: "15px", margin: "0px 10px" }}>
+          <p
+            style={{
+              color: "red",
+              fontSize: "1rem",
+              margin: " 0px 15px",
+              textAlign: " center",
+            }}
+          >
             {errors.password}
           </p>
         )}
