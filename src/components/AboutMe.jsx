@@ -28,7 +28,9 @@ const AboutMe = () => {
   return (
     <section id="about">
       <div className="about-me-container">
-        <h2>About Me</h2>
+        <div>
+          <h2>About Me</h2>
+        </div>
         {isLoading ? (
           <AboutMeSkeleton />
         ) : teacherData ? (
