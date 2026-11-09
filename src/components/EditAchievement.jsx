@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 const EditAchievement = () => {
   const [errors, setErrors] = useState({});
   const [students, setStudents] = useState({});
+  const [studentName, setStudentName] = useState("");
+  const [studentStandard, setStudentStandard] = useState("");
+  const [studentPassoutYear, setStudentPassoutYear] = useState("");
+  const [studentPercentage, setStudentPercentage] = useState("");
+  const [editingStudentId, setEditingStudentId] = useState(null);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -25,6 +30,10 @@ const EditAchievement = () => {
 
     const formData = new FormData(e.target);
 
+    if (editingStudentId !== null) {
+      formData.append("student-id", String(editingStudentId));
+    }
+
     const studentImage = formData.get("student-image");
     const studentName = formData.get("student-name");
     const studentStandard = formData.get("student-standard");
@@ -33,7 +42,7 @@ const EditAchievement = () => {
 
     const newErrors = {};
 
-    if (studentImage.name === "") {
+    if (editingStudentId === null && studentImage.name === "") {
       newErrors.studentImage = "Please select image file.";
     }
 
@@ -68,14 +77,20 @@ const EditAchievement = () => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/student`,
       {
-        method: "Post",
+        method: "POST",
         body: formData,
       },
     );
 
     const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || data.error || "Could not save student");
+    }
     console.log(data);
-    e.target.reset();
+    setStudentName("");
+    setStudentStandard("");
+    setStudentPassoutYear("");
+    setStudentPercentage("");
   };
 
   useEffect(() => {
@@ -95,6 +110,16 @@ const EditAchievement = () => {
       alert(errors.studentPercentage);
     }
   }, [errors]);
+
+  const handleEdit = (studentId) => {
+    const studentToEdit = students.find((student) => student.id === studentId);
+    if (!studentToEdit) return;
+    setEditingStudentId(studentToEdit.id);
+    setStudentName(studentToEdit.studentName);
+    setStudentStandard(studentToEdit.studentStandard);
+    setStudentPassoutYear(String(studentToEdit.studentPassoutYear));
+    setStudentPercentage(String(studentToEdit.studentPercentage));
+  };
 
   const handleDelete = async (studentId, imagePath) => {
     const encodedImagePath = encodeURIComponent(imagePath);
@@ -131,9 +156,20 @@ const EditAchievement = () => {
             </div>
 
             <label htmlFor="student-name">Student Name</label>
-            <input type="text" name="student-name" id="student-name" />
+            <input
+              type="text"
+              name="student-name"
+              id="student-name"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+            />
             <label htmlFor="student-standard">Student Standard</label>
-            <select name="student-standard" id="student-standard">
+            <select
+              name="student-standard"
+              id="student-standard"
+              value={studentStandard}
+              onChange={(e) => setStudentStandard(e.target.value)}
+            >
               <option value="">Select</option>
               <option value="First">First</option>
               <option value="Second">Second</option>
@@ -142,7 +178,12 @@ const EditAchievement = () => {
               <option value="Fifth">Fifth</option>
             </select>
             <label htmlFor="student-passout-year">Student Passout Year</label>
-            <select name="student-passout-year" id="student-passout-year">
+            <select
+              name="student-passout-year"
+              id="student-passout-year"
+              value={studentPassoutYear}
+              onChange={(e) => setStudentPassoutYear(e.target.value)}
+            >
               <option value="">Select</option>
               <option value="2023">2023</option>
               <option value="2024">2024</option>
@@ -154,6 +195,8 @@ const EditAchievement = () => {
               name="student-percentage"
               id="student-percentage"
               step="0.01"
+              value={studentPercentage}
+              onChange={(e) => setStudentPercentage(e.target.value)}
             />
             <input type="submit" value="Submit" />
           </form>
@@ -190,13 +233,20 @@ const EditAchievement = () => {
                       {student.studentPercentage}
                     </div>
                     <div className="data-style">
-                      <button
-                        onClick={() =>
-                          handleDelete(student.id, student.imageUrl)
-                        }
-                      >
-                        Del
-                      </button>
+                      <div>
+                        <button onClick={() => handleEdit(student.id)}>
+                          Edit
+                        </button>
+                      </div>
+                      <div>
+                        <button
+                          onClick={() =>
+                            handleDelete(student.id, student.imageUrl)
+                          }
+                        >
+                          Del
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

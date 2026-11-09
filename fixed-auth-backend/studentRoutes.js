@@ -20,7 +20,19 @@ router.get("/student", async (req, res) => {
 
 router.post("/student", upload.single("student-image"), async (req, res) => {
   try {
-    console.log(req.body);
+    const studentId = req.body["student-id"]
+      ? Number(req.body["student-id"])
+      : null;
+
+    const existingStudent = studentId
+      ? await prisma.student.findUnique({ where: { id: studentId } })
+      : null;
+
+    if (studentId && !existingStudent) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
+    }
 
     const {
       ["student-name"]: studentName,
@@ -30,7 +42,7 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
     } = req.body;
 
     let imageFileName = "";
-    let imageUrl = "";
+    let imageUrl = existingStudent?.imageUrl ?? "";
 
     if (req.file) {
       const imageFileExt = req.file.originalname.split(".").pop();
@@ -52,15 +64,20 @@ router.post("/student", upload.single("student-image"), async (req, res) => {
       imageUrl = publicUrlData.publicUrl;
     }
 
-    const newStudent = await prisma.student.create({
-      data: {
-        studentName: studentName,
-        studentStandard: studentStandard,
-        studentPassoutYear: parseInt(studentPassoutYear),
-        studentPercentage: parseFloat(studentPercentage),
-        imageUrl: imageUrl,
-      },
-    });
+    const studentData = {
+      studentName: studentName,
+      studentStandard: studentStandard,
+      studentPassoutYear: parseInt(studentPassoutYear),
+      studentPercentage: parseFloat(studentPercentage),
+      imageUrl: imageUrl,
+    };
+
+    const newStudent = existingStudent
+      ? await prisma.student.update({
+          where: { id: studentId },
+          data: studentData,
+        })
+      : await prisma.student.create({ data: studentData });
 
     res.json({ success: true, newStudent });
   } catch (error) {

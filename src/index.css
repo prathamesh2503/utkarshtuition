@@ -485,7 +485,7 @@ a {
   }
 
   .about-me-skeleton-box {
-    background-color: #e2e8f0;
+    background-color: darkslategray;
     border-radius: 4px;
     animation: pulse 1.5s ease-in-out infinite;
   }
