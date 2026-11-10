@@ -116,8 +116,12 @@ Student : Stores student names, grades, and year details.
 
 ## Screenshots
 
-<img width="1349" height="588" alt="image" src="https://github.com/user-attachments/assets/fd84bc0b-a483-43ce-9b3b-0a03bd6a415e" />
+<img width="1351" height="585" alt="image" src="https://github.com/user-attachments/assets/11f835a2-9110-47b2-8e18-624cb9563601" />
 
-<img width="1365" height="723" alt="image" src="https://github.com/user-attachments/assets/2e74346c-4f4c-46d8-a2f1-ecc609b8477b" />
+<img width="1365" height="605" alt="image" src="https://github.com/user-attachments/assets/6ae9e0dd-ac7d-44d4-a451-8b06f448916a" />
 
-<img width="1354" height="594" alt="image" src="https://github.com/user-attachments/assets/5df21f6f-19a9-4dd6-a6a8-ed0e4dba2cb7" />
+<img width="1365" height="759" alt="image" src="https://github.com/user-attachments/assets/2da80e25-afc5-45c6-b907-41d9d6a3679a" />
+
+<img width="1347" height="761" alt="image" src="https://github.com/user-attachments/assets/5b36c7bb-aa11-4ea7-bb5e-6a0bcf0653f2" />
+
+
