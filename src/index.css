@@ -96,6 +96,10 @@ a {
   padding-top: 20px;
 }
 .about-me-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 .about-me-child-container {
@@ -127,7 +131,7 @@ a {
 .about-me-heading {
   margin-top: 10px;
   height: 40px;
-  width: 50%;
+  width: 75%;
 }
 
 .about-me-description {
@@ -139,12 +143,17 @@ a {
   background-color: #dceae5;
   padding: 1px 0 20px;
 }
+
+.achivement-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .achivement-container h2 {
   margin-top: 0;
   padding-top: 20px;
-}
-.achivement-container {
-  text-align: center;
 }
 
 .achievement-filter {
