@@ -10,13 +10,15 @@ The purpose of this web application is to provide prospective students and paren
 
 ## ✨ Key Features
 
-Public-Facing Landing Page: A fully responsive web page displaying tuition information, teacher background, and student success stories.
-
-Admin Dashboard: Secure authentication providing single-teacher admin login and logout functionality.
-
-Dynamic Content Management (About Me): The admin can easily add or delete details in the "About Me" section directly from the dashboard, which instantly reflects on the public frontend.
-
-Student Achievement Manager: The admin can seamlessly add, edit, or delete student data (names, scores, achievements) via the dashboard, ensuring the public webpage is always up-to-date with the latest success stories.
+1. Responsive education website for a tuition center.
+2. Dynamic About Me section with editable teacher profile
+3. Student achievement gallery with standard-based filtering
+4. Secure admin login and logout flow
+5. Dashboard to manage website content without coding
+6. Image upload support for teacher and student profiles
+7. Full-stack architecture with React, Express, Prisma, Supabase, and Vercel
+8. Secure session handling with JWT and cookies
+9. Modern, lightweight UI designed for parents and students
 
 ## 💻 Tech Stack
 
@@ -123,5 +125,3 @@ Student : Stores student names, grades, and year details.
 <img width="1365" height="759" alt="image" src="https://github.com/user-attachments/assets/2da80e25-afc5-45c6-b907-41d9d6a3679a" />
 
 <img width="1347" height="761" alt="image" src="https://github.com/user-attachments/assets/5b36c7bb-aa11-4ea7-bb5e-6a0bcf0653f2" />
-
-
